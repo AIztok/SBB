@@ -2,7 +2,7 @@
 Das Einführungsbeispiel ist ein einfacher Halbrahmen mit einer Wand und einer Decke.
 
 Wir öffnen das Programm SOFiSTiK SSD 2023 (oder auch neuer):
-![SSD vorlage](/SBB/docs/assets/images/SSD_Vorlage.png)
+![SSD vorlage](/docs/assets/images/SSD_Vorlage.png)
 
 ## Basis input
 
