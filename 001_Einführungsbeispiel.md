@@ -1,10 +1,22 @@
-
 Das Einführungsbeispiel ist ein einfacher Halbrahmen mit einer Wand und einer Decke.
 
 ## Inhalt
+[Was passiert im Hintergrund?](#was-passiert-im-hintergrund)
 [Erstellen des Projekts](#erstellen-des-projekts)
-
 [Basis Input](#basis-input)
+[Materialangabe](#materialangabe)
+[Querschnittsdefinition](#querschnittsdefinition)
+[Modelleingabe](#modelleingabe)
+
+## Was passiert im Hintergrund?
+FEA - Finite Element Analysis - Finite Elemente Berechnung
+
+Um die Grundlagen einer Finite Elemente Berechnung an dem einfachen Einführungsbeispiel mit Stabelementen besser zu verstehen, wurde in einem [Jupyter](https://jupyter.org/) Workbook die Berechnung der Schnittgrößen und Verschiebungen Schritt per Schritt durchgeführt. Die Anzahl der Finite Elemente wurde klein gehalten, damit die Übersicht nicht verloren geht.
+Damit keine Installation von Python erforderlich ist (aber dafür ein Account auf Google :)) wurde der Code auf Google Colab hochgeladen:
+
+[Einführungsbeispiel in Python - Link zu dem Jupyter workbook auf Google Colab](https://colab.research.google.com/drive/1Yio_5SlEL6frEUguNEkPdDJhUXO9Q-f7?usp=sharing)
+
+Das File / Workbook kann auch [hier](https://aiztok.github.io/SBB/docs/FH_SBB_FEM_Example.ipynb) von GitHub heruntergeladen werden. 
 
 
 ## Erstellen des Projekts
@@ -126,4 +138,65 @@ CUT 'Csc' ZB 'S' BRED 0.1[m] ! Schubschnitt durch den Schwerpunkt des QS
 
 end 
 ```
+
+## Modelleingabe
+Es wird das Modul SOFIMSHC verwendet, dass mit Strukturelementen arbeitet.
+Es werden z.B.:
+- Strukturpunkte (SPT)
+- Strukturlinien (SLN)
+- Strukturflächen (SAR)
+erstellt.
+Die Vernetzung der Strukturelement erfolgt nach der Berechnung des Moduls im Hintergrund.
+Alternativ kann auch der Modul SOFIMSHA verwendet werden, wo direkt mit Finiten Elementen gearbeitet wird. 
+
+```
++prog sofimshc urs:3
+head 'Model'
+page unii 0 unio 0
+
+! Definition der Parameter für die Vernetzung
+ctrl hmin 1.0
+ctrl mesh 1
+
+! Definition des FE-Systems (gruppen divisor gdiv, richtung des eigengewichts)
+syst 2D gdiv 100 gdir posy
+
+! Definition der Strukturpunkte mit Auflagerbedingungen
+spt 1 x 0 y 0 fix f
+spt 2 x 0 y -3.15
+spt 3 x 3 y -3.15
+spt 4 x 6 y -3.15 fix py
+
+! Definition der Strukturlinien
+sln 1 1 2 sno 1 grp 1 titl 'Wand'   styp b.e
+sln 2 2 3 sno 2 grp 2 titl 'Decke'  styp b.e
+sln 3 3 4 sno 2 grp 2 titl 'Decke'  styp b.e
+
+end   
+```
+
+## Definition der Einwirkungen
+
+
+
+
+## Definition der Lasten
+
+
+
+## Lineare Berechnung
+
+
+
+## Überlagerung der Ergebnisse - Erstellung der Einwirkungskombinationen
+Die linear ermittelten Schnittgrößen und Verschiebungen werden für die Ermittlung der Einwirkungskombinationen (EWK) linear überlagert mit entsprechenden Sicherheits- und Kombinationsfaktoren.
+
+Wichtig ist anzumerken, dass SOFiSTiK die Ergebnisse der Überlagerungen in Lastfälle (LF) speichert.
+Jedoch muss darauf geachtet werden, dass nicht vorhandene LFs (sei es tatsächlich eingegebenen Lasten oder Ergebnisse von Kombinationen) überschrieben werden - also nicht verwendete LFs verwendet werden. Hier hilft ein klares Nummerierungs-system von LFs.
+
+
+## Bemessung der Stabelemente
+
+Die Bemessung der Stabelemente erfolgt im Modul AQB. In der zweiten Übung wird auch die Bemessung der Flächenelemente mit dem Modul BEMESS vorgestellt.
+
 
