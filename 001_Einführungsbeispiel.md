@@ -2,9 +2,9 @@
 Das Einführungsbeispiel ist ein einfacher Halbrahmen mit einer Wand und einer Decke.
 
 ## Inhalt
-[Erstellen des Projekts](#Erstellen-des-Projekts)
+[Erstellen des Projekts](#erstellen-des-projekts)
 
-[Basis Input](#Basis-Input)
+[Basis Input](#basis-input)
 
 
 ## Erstellen des Projekts
