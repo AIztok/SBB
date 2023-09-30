@@ -6,3 +6,4 @@ Inhalt:
 
 [1. Einführungsbeispiel](https://aiztok.github.io/SBB/001_Einführungsbeispiel.html)
 
+[100. SOFiChatBot](https://aiztok.github.io/SBB/100_SOFiChatBot.html)
