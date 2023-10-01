@@ -10,7 +10,7 @@ Inhalt:
 
 [022. 2. Übung - Unterzug](https://aiztok.github.io/SBB/022_Uebung.html)
 
-[031. 3. Übung - Unterzug](https://aiztok.github.io/SBB/031_Uebung.html)
+[031. 3. Übung](https://aiztok.github.io/SBB/031_Uebung.html)
 
 [100. SOFiChatBot](https://aiztok.github.io/SBB/100_SOFiChatBot.html)
 
