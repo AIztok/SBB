@@ -4,7 +4,7 @@ Inhalt:
 
 [000. Allgemein](https://aiztok.github.io/SBB/000_Allgemein.html)
 
-[011. Einführungsbeispiel](https://aiztok.github.io/SBB/011_Einführungsbeispiel.html)
+[011. 1. Übung - Einführungsbeispiel](https://aiztok.github.io/SBB/011_Einfuehrungsbeispiel.html)
 
 [021. 2. Übung - Hallenbinder](https://aiztok.github.io/SBB/021_Uebung.html)
 
