@@ -1,0 +1,507 @@
++prog template urs:1
+head 'Einfuehrung'
+
+! mit "!" oder "$" können Kommentare geschrieben werden
+<text>
+FH Campus Wien
+SBB
+Beispiel: Einfuehrungsbeispiel
+Datum der letzten Änderung: 02.08.2023
+Autor: Iztok Arnuga
+Sofistik Version: 2023
+
+Log der Änderungen:
+/
+
+</text>
+
+end
+
++prog aqua urs:43.1
+head 'Materialangabe'
+$----------------------------------------------------------------------------------
+!*! Angabe der Norm
+NORM OEN en199X-200X unit 0 !
+$----------------------------------------------------------------------------------
+!*! Umfang der Ausgabe
+echo full extr
+$----------------------------------------------------------------------------------
+!*! Beton
+CONC NO 1  TYPE c 30N           titl 'Beton C30/37 Normalerhärtend'
+CONC NO 2  TYPE c 30R           titl 'Beton C30/37 Schnellerhärtend'
+CONC NO 3  TYPE c 30S           titl 'Beton C30/37 Langsamerhärtend'
+CONC NO 4  TYPE c 25 gam 0.0    titl 'Beton C25/30 Ohne EGW' ! Ohne EGW, z.B. für Bohrpfähle
+!
+$----------------------------------------------------------------------------------
+!*! Bewehrung
+STEE NO 101 TYPE b 550b titl 'Bewehrung B550B'
+$----------------------------------------------------------------------------------
+!*! Spannstahl
+STEE NO 201 TYPE Y 1860 titl 'Y1860'
+$----------------------------------------------------------------------------------
+!*! Konstruktionsstahl
+STEE NO 301 TYPE S 355 titl 'S355'
+$----------------------------------------------------------------------------------
+!*! Holz
+TIMB NO 401 TYPE C 30 titl 'Holz C30'
+
+end
+
++prog aqua urs:2
+head 'Definition des Querschnitts'
+echo full extr
+ctrl rest 2 ! Steuerung, dass die Angaben des vorherigen AQUA nicht überschrieben werden
+
+$----------------------------------------------------------------------------------
+!*! Wand-QS
+srec 1 h 0.25 b 100[cm] so 0.04[m] su 0.04[m] mno 1 mrf 101 titl 'Wand 100/25' ! QS-Definition mit vereeinfachter Eingabe für Rechteckquerschnitte
+
+$----------------------------------------------------------------------------------
+!*! Decken-QS
+SECT NO   2  MNO  2 MRF 101 titl 'Decke 100/30' ! QS-Definition über Polygonpunkte
+
+let#h 0.30[m] ! Lokale Variable für die Querschnittshöhe
+let#b 1.00[m] ! Lokale Variable für die Querschnittsbreite
+
+!*! Spannungspunkte - wo wir die Spannungen ermitteln wollen
+$ Oberkante
+SPT OKL  Y -#b/2 Z 0 MNO 2
+SPT OKM  Y  0.00   Z 0 MNO 2
+SPT OKR  Y +#b/2 Z 0 MNO 2
+$ Unterkante
+SPT UKL  Y -#b/2 Z #H MNO 2
+SPT UK   Y  0.00   Z #H MNO 2
+SPT UKR  Y +#b/2 Z #H MNO 2
+
+POLY TYPE O   MNO  2
+    VERT   1  Y   0     Z   0       REFP OKL
+    VERT   2  Y   0     Z   0       REFP OKM
+    VERT   3  Y   0     Z   0       REFP OKR
+    VERT  11  Y   0     Z   0       REFP UKR
+    VERT  12  Y   0     Z   0       REFP UK
+    VERT  13  Y   0     Z   0       REFP UKL
+! Obere Bewehrung
+! Eingabe Bewehrungsdurchmesser und Abstand
+!LRF 2 YB -0.04 ZB  0.04 YE 0.04 ZE  0.04 REFA 'OKR' REFE 'OKL' D 10[mm] A 0.1[m] DIST FULL LAY M2
+! Noch andere Möglichkeiten Linienbewehrung im QS zu definieren
+! Eingabe Bewehrungsdurchmesser und Anzahl
+$LRF 2 YB -0.04 ZB  0.04 YE 0.04 ZE  0.04 REFA 'OKR' REFE 'OKL' D 10[mm] A 9[-] DIST FULL LAY M2
+! Eingabe Bewehrungsquerschnittsfläche im Querschnitt
+LRF 2 YB -0.04 ZB  0.04 YE 0.04 ZE  0.04 REFA 'OKR' REFE 'OKL' AS 6.0[cm2]  D 10[mm] DIST FULL LAY M2
+! Eingabe Bewehrungsquerschnittsfläche pro m
+!LRF 2 YB -0.04 ZB  0.04 YE 0.04 ZE  0.04 REFA 'OKR' REFE 'OKL' AS 6.0[cm2/m] A 1 D 10[mm] DIST EVEN LAY M2
+
+! Untere Bewehrung
+LRF 1 YB -0.04 ZB -0.04 YE 0.04 ZE -0.04 REFA 'UKR' REFE 'UKL' D 10[mm] A 0.1[m] DIST FULL LAY M1
+
+! Schubschnitte       reduzierte Stegbreite wegen der Kabelnische
+CUT 'Csc' ZB 'S' BRED 0.1[m] ! Schubschnitt durch den Schwerpunkt des QS, z.B.
+
+end
+
++prog sofimshc urs:3
+head 'Model'
+page unii 0 unio 0
+
+! Definition der Parameter für die Vernetzung
+ctrl hmin 0.5 ! Netzgröße in [m]
+ctrl mesh 1 ! Stabelemente
+
+! Definition des FE-Systems (gruppen divisor gdiv, richtung des eigengewichts)
+syst 2D gdiv 100 gdir posy
+
+! Definition der Strukturpunkte mit Auflagerbedingungen
+spt 1 x 0 y 0 fix f ! Wandfuß
+spt 2 x 0 y -3.15   ! Wandkopf
+spt 3 x 3 y -3.15   ! Deckenmitte
+spt 4 x 6 y -3.15 fix py ! Deckenrand
+
+! Definition der Strukturlinien
+sln 1 1 2 sno 1 grp 1 titl 'Wand'   styp 'b.e'
+sln 2 2 3 sno 2 grp 2 titl 'Decke'  styp 'b.e'
+sln 3 3 4 sno 2 grp 2 titl 'Decke'  styp 'b.e'
+
+end
+
+
++prog sofiload urs:4
+head 'Definition der Einwirkungen'
+echo full extr
+! Hier werden die Sicherheitsbeiwerte und Kombinationsbeiwerte definiert
+
+! Ohne eine explizite EIngabe der Sicherheitsbeiwerte und Kombinationsbeiwerte werden
+! die im Programm vordefinierten Werte genommen (Auswahl Norm und Kategorie von Anwender).
+! Altrnativ ist es möglich, wie unten kommentiert dargestellt, diese Werte auch explizit anzugeben,
+! falls die ggf. erforderlich ist.
+
+!Ständige Lasten
+    ACT G   $GAMU 1.35 GAMF 1.00 PSI0 1.00 PSI1 1.00 PSI2 1.00 PS1S 1.00 PART G  SUP PERM TITL 'STäNDIGE LASTEN'
+    ACT G_1 $GAMU 1.35 GAMF 1.00 PSI0 1.00 PSI1 1.00 PSI2 1.00 PS1S 1.00 PART G  SUP PERM TITL 'KONSTRUKTIONSGEWICHT'
+    ACT G_2 $GAMU 1.35 GAMF 1.00 PSI0 1.00 PSI1 1.00 PSI2 1.00 PS1S 1.00 PART G  SUP PERM TITL 'AUSBAUGEWICHT'
+
+! Nutzlast
+    ACT Q   $GAMU 1.50 GAMF 0.00 PSI0 0.80 PSI1 0.50 PSI2 0.00 part Q sup excl titl 'Nutzlast'
+
+! Schneelast
+    ACT S  $GAMU 1.50 0 SUP COND PSI0 0.75 PSI1 0.50 PSI2 0.00  TITL 'Schneelast'
+
+! Windlast
+    ACT W  $GAMU 1.50 0 SUP COND PSI0 0.75 PSI1 0.50 PSI2 0.00  TITL 'Wind'
+
+end
+
+
++prog sofiload urs:5
+head 'Definition der Lasten - Ständige'
+
+!*!Label EGW
+lc 1 facd 1.0 type G_1 titl 'EGW'
+! Mit "facd" wird das Eigengewicht gem. in Projektdefinition vorgegebener Richtung der Schwerkraft
+! der Querschnittsflächen und der Materialwichte, ermittelt.
+
+end
+
++prog sofiload urs:7
+head 'Definition der Lasten - Veränderliche'
+
+!*!Label Nutzlast
+lc 10 type Q titl 'Nutzlast'
+poin auto type pg p 100 x 3 y -3.15
+! Wir definieren beispielhaft eine punktuelle Nutzlast in der Mitte der Decke
+
+!*!Label Schneelast
+lc 20 type S titl 'Schneelast'
+$beam grp 2 type pg pa 0.8 $ wir können die Linienlast über Referenz zu der Stabgruppe aufbringen
+$line auto type pg p1 0.8 x1 0 y1 -3.15 x2 6 y2 -3.15 ! Linienlast über Referenz zu globalen Koordinaten
+line sln 2 type pg p1 0.8 ! Linienlast über Referenz zu strukturlinie
+! wie oben aufgezeigt, kann eine Linienlast über mehrere Wege definiert werden
+
+!*!Label Windlast
+lc 30 type W titl 'Windlast'
+beam grp 1 type pxx pa 1
+
+end
+
+!#!Chapter Berechnung
++prog ase urs:6
+head Berechnung
+! Berechnungsparameter
+syst prob line        ! lineare Berechnung
+!
+grp - ! alle Gruppen sind eingeschaltet, sonst ist es möglich gruppen auszuschalten (z.B. Bauzustände)
+!
+lc all ! so werden alle definierten Lastfälle berechnet
+$lc 1,10,20,30 ! so können explizite Lastfälle berechnet werden
+
+end
+
+!#!Chapter Überlagerung
++prog maxima urs:12
+head 'Ergebniskombination'
+
+! Output control
+$echo full yes
+echo chck val full
+
+COMB 1 rare BASE - $ kombination charakteristisch
+    ACT G_1
+$        LC NO 1 TYPE G  ! man kann explizit die LF nennen oder es werden alle die mit G_1 im SOFILOAD genannt wurden genommen
+    ACT Q ! Nutzlast
+$        LC NO 10 TYPE Q
+    ACT S ! Schnee
+$        LC NO 20 TYPE Q
+    ACT W ! WInd
+        LC NO 30 TYPE X1  ! wir wollen, dass die Windlast sowohl in plus als auch minus Richtung berücksichtigt wird, somit X
+
+let#lf 1120
+SUPP ETYP TYPE   LC   FROM  TITL EXTR=MAMI COMB=1
+! mit #define / #enddef können text blöcke definiert werden, die immer wieder verwendet werden
+! in diesem Fall wählen wir aus einer List aus, für welche Ergebnisse wollen wir, dass die Software
+! eine Ergebniskombination erstellt / ermittelt.
+
+#define results
+$      'spri' P   #lf+1
+$      'spri' M   #lf+3
+
+      'NODE' PX  #lf+1
+      'NODE' PY  #lf+3
+$      'NODE' PZ  #lf+5
+$      'NODE' MX  #lf+7
+$      'NODE' MY  #lf+9
+      'NODE' MZ  #lf+11
+      'NODE' UX   #lf+13
+      'NODE' UY   #lf+15
+$      'NODE' UZ   #lf+17
+$      'NODE' URX  #lf+19
+$      'NODE' URY  #lf+21
+      'NODE' URZ  #lf+23
+
+      'beam' N   #lf+1
+$      'beam' VY  #lf+3
+      'beam' VZ  #lf+5
+$      'beam' MT  #lf+7
+      'beam' MY  #lf+9
+$      'beam' MZ  #lf+11
+$      'BEAM' PTY #lf+13
+$      'BEAM' PTZ #lf+15
+
+$      'QUA*' mxx #lf+1
+$      'QUA*' myy #lf+3
+$      'QUA*' mxy #lf+5
+$      'QUA*' vx  #lf+7
+$      'QUA*' vy  #lf+9
+$      'QUA*' nxx #lf+11
+$      'QUA*' nyy #lf+13
+$      'QUA*' nxy #lf+15
+
+$      'QBED' p   #lf+1
+$      'QBED' pt  #lf+3
+#enddef
+#include results
+
+COMB 4 perm BASE - $ kombination quasi-ständig
+    ACT G_1
+    ACT Q
+    ACT S
+    ACT W
+
+let#lf 1420
+SUPP ETYP TYPE   LC   FROM  TITL EXTR=MAMI COMB=4
+#include results
+
+COMB 10 desi BASE -  $ kombination GZT
+    ACT G_1
+    ACT Q
+    ACT S
+    ACT W
+
+let#lf 2120
+SUPP ETYP TYPE   LC   FROM  TITL EXTR=MAMI COMB=10
+#include results
+
+end
+
+!#!Chapter Bemessung
++prog aqb urs:11
+head 'GZT Bemessung Stäbe'
+echo full extr ! Komplette textliche Ausgabe der Ergebnisse
+page lano 0
+
+beam grp 1,2 ! wir können auswählen welche Gruppe soll bemessen werden
+
+! Auswahl der Lastfälle für die Bemessung
+$lc 21??
+lc (d) ! alle gespeicherten Lastfälle
+
+rein beam rmod accu lcr 1
+
+desi ulti ksv uld ksb uld
+
+end
+
+-prog aqb urs:13
+head 'GZG Bemessung Stäbe'
+echo full extr
+page lano 0
+
+beam grp 1,2 ! wir können auswählen welche Gruppe soll bemessen werden
+
+! Auswahl der Lastfälle für die Bemessung
+$lc 14??
+lc (p) ! alle gespeicherten Lastfälle
+
+rein beam rmod accu lcr 1 ! wir nehmen die Ergebnisse aus GZT und falls mehr Bew. erforderlich (Rissbreite) wird es akkumuliert.
+
+nstr serv ksb sl ksv sl crac yes cw 0.3 ! Rissbreitennachweis
+
+end
+
+!#!Chapter Graphische Ergebnisse
+-PROG WING urs:14
+HEAD 'Schnittgrößen'
+
+PAGE LANO 0                       ! Ausgabe in Deutsch
+SIZE -4 SC 50 FORM URS SPLI '3*1' ! A4 Blatt Vertikal, Maßstab 1:50, 3 Abbildungen über die Blatthöhe
+
+LET#lf 1,10,20,30  ! wir definieren eine lokale Variable (bzw. Vektor mit 4 Werten), und zwar die Lastfallnummern
+
+! In Sofistik können Schleifen definiert werden, anbei eine einfache Schleife, die von dem Vektor "#lf" die Anzahl der einträge übernimmt (4, also die Schleife läuft 4x)
+! und der interne Zähler der Schleife ist die Variable "#i" mit der wir in jedem Schleifenlauf den nächsten Wert des Vektors "#lf" lesen
+! Achtung: LET ist eine lokale Variable die nur in diesem +prog WING modul gespeichert ist
+! STO wäre eine globale Variable, die über die ganze Berechnung in allen Modulen zu verfügung stehen würde.
+! Es ist sinnvoll darauf zu achten die STO nur dann zu verwenden, wenn man diese Funktion benötigt und sonst mit LET zu arbeiten.
+
+loop#i lf
+    ! Biegemoment My, Schriftgröße 0.3cm
+    LC   NO #lf(#i) ; BEAM TYPE MY UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+    ! Querkraft Vz, Schriftgröße 0.3cm
+    LC   NO #lf(#i) ; BEAM TYPE Vz UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+    ! Normalkraft N
+    LC   NO #lf(#i) ; BEAM TYPE N UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+endloop
+
+! mit einer neuen Definition SIZE, wird sichergestellt, das die folgenden Ergebnisse am neuen Blatt gedruckt werden
+SIZE -4 SC 50 FORM URS SPLI '3*1' ! A4 Blatt Vertikal, Maßstab 1:50, 3 Abbildungen über die Blatthöhe
+
+! Wir können aber natürlich auch einzeln die Ergebnisse darstellen, z.B. für GZT
+
+! Biegemomente in separaten Bildern
+! max Biegemoment My, Schriftgröße 0.3cm
+LC   NO 2129 ; BEAM TYPE MY UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+! min Biegemoment My
+LC   NO 2130 ; BEAM TYPE MY UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+
+! Oder mit der AND funktion überlagert am Blatt
+! max Biegemoment My, Schriftgröße 0.3cm
+LC   NO 2129 ; BEAM TYPE MY UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+and
+! min Biegemoment My
+LC   NO 2130 ; BEAM TYPE MY UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+
+END
+
+! wenn mehrere gleiche Module hintereinander berechnet werden
+! in diesem Fall WING, kann auf das +prog verzichtet werden
+! das Ergebniss ist, dass die Berechnung schneller läuft, da
+! das Modul nicht jedesmal geschlossen und neu gestartet wird
+
+HEAD 'Auflagerkräfte'
+
+PAGE LANO 0
+SIZE -4 SC 50 FORM URS SPLI '2*1'
+
+! Auflagerkraft in X Richtung global
+LC   NO 2121 ; NODE TYPE SX UNIT DEFA SCHH 0.3 FILL NO
+and
+LC   NO 2122 ; NODE TYPE SX UNIT DEFA SCHH 0.3 FILL NO
+
+! Auflagerkraft in Y Richtung global
+LC   NO 2123 ; NODE TYPE SY UNIT DEFA SCHH 0.3 FILL NO
+and
+LC   NO 2124 ; NODE TYPE SY UNIT DEFA SCHH 0.3 FILL NO
+
+END
+
+HEAD 'Verschiebungen und Verdrehungen'
+
+PAGE LANO 0
+SIZE -4 SC 50 FORM URS SPLI '2*1'
+
+! Verschiebungen GZG Quas-Ständig in X Richtung
+LC   NO 1420+13 ; NODE TYPE UX UNIT DEFA SCHH 0.3 FILL NO
+LC   NO 1420+14 ; NODE TYPE UX UNIT DEFA SCHH 0.3 FILL NO
+
+! Verschiebungen GZG Quas-Ständig in Y Richtung
+LC   NO 1420+15 ; NODE TYPE UY UNIT DEFA SCHH 0.3 FILL NO
+LC   NO 1420+16 ; NODE TYPE UY UNIT DEFA SCHH 0.3 FILL NO
+
+END
+
+
+!#!Chapter Tabelarische Ausgabe
+-PROG RESULTS urs:17
+HEAD 'Tabelarische Ausgabe Schnittgrößen'
+
+PAGE LANO 0                       ! Ausgabe in Deutsch
+SIZE TYPE "-URS" SPLI "2x1"
+
+LC   NO 1
+! Normalkräfte von Stäben
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+BEAM TYPE    N STYP BEAM REPR DLST
+! Querkraft von Stäben
+AND $ damit gleiche Tabelle, neue Spalte
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+BEAM TYPE   VZ STYP BEAM REPR DLST
+! Biegemomente von Stäben
+AND
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+BEAM TYPE   MY STYP BEAM REPR DLST
+
+END
+
+!#!Chapter EXCEL Ausgabe
+-prog results urs:18
+head 'Export ins xlsx Format'
+
+! ein Doppeltes Dollar $$ ist ein umbruch, die Zeilen werden von der Software
+! gelesen als ob es die gleiche Zeile wäre - praktisch bei langen Eingaben um es
+! trotzdem auf dem Bildschirm zu sehen, ohne das Fenster zu verschieben
+xlsx "CONC_Knicken_stahlbetonstuetze.xlsx" WS "SOFi_Erg_GZT" $$
+ROW 1 COL 1
+
+! Export der maximalen Druckkraft in der Wand und des dazugehörigen Biegemoments
+grp 1 ! nur die Wandelemente
+
+LC   NO 2120+2 ! min N
+! Normalkräfte NEd von Stäben
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+BEAM TYPE    N STYP BEAM REPR DLST
+! Biegemomente MEd von Stäben
+AND
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+BEAM TYPE   MY STYP BEAM REPR DLST
+! Biegemomente MEd von Stäben
+
+end
+
+-prog results urs:16
+head 'Export ins xlsx Format'
+
+xlsx "CONC_Knicken_stahlbetonstuetze.xlsx" WS "SOFi_Erg_GZG" $$
+ROW 1 COL 1
+
+LC   NO 1420+9 ! Auch Quasi-Ständig My wird benötigt
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+BEAM TYPE   MY STYP BEAM REPR DLST
+
+
+end
+
+-prog results urs:15
+head 'Querschnittswerte'
+
+xlsx "CONC_Knicken_stahlbetonstuetze.xlsx" WS "SOFi_QS" $$
+ROW 1 COL 1
+
+LC   SECT 1 ! Auswahl Querschnittsnummer
+$ Nummer des Querschnitts
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+STRU TYPE  ENO ETYP SECT REPR DLST
+$ Querschnittsfläche
+AND
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+STRU TYPE    A ETYP SECT REPR DLST
+$ Trägheitsmoment um die Y Achse
+AND
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+STRU TYPE   IY ETYP SECT REPR DLST
+
+END
+
+!#!Chapter Extra: Kontrolle der Einwirkungskombinationen
+-prog maxima urs:8
+head 'Track EWK'
+echo full
+
+trac 2120+9 etyp beam elem 204 x 0 csav 801
+
+end
+
+-prog sofiload urs:10
+head 'Umformen gespeicherte Kombination in Lastfall'
+
+lc 900 type none
+copy 801 comb
+
+end
+
+-prog ase urs:9
+head 'Berechnung'
+
+lc 900
+
+end
+
+
+
