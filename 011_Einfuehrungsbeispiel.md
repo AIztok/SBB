@@ -2,6 +2,8 @@
 Das Einführungsbeispiel ist ein einfacher Halbrahmen mit einer Wand und einer Decke.
 
 ![Skizze_Halbrahmen.png](/docs/assets/images/Skizze_Halbrahmen.png)
+
+Der komplette Code kann im .dat Format [hier](https://aiztok.github.io/SBB/docs/FH_SBB_Einfuehrungsbeispiel_v01.dat) runtergeladen werden.
 ## Inhalt
 [Was passiert im Hintergrund?](#was-passiert-im-hintergrund)
 
@@ -26,6 +28,8 @@ Das Einführungsbeispiel ist ein einfacher Halbrahmen mit einer Wand und einer D
 [Bemessung der Stabelemente](#bemessung-der-stabelemente)
 
 [Ergebnisausgabe](#ergebnisausgabe)
+
+[Extra TRAC](#extra)
 
 ## Was-passiert-im-Hintergrund?
 FEA - Finite Element Analysis - Finite Elemente Berechnung
@@ -90,7 +94,7 @@ Wir werden nur mit Beton und Bewehrung arbeiten, jedoch wurden als Beispiel noch
 head 'Materialangabe'
 $----------------------------------------------------------------------------------
 !*! Angabe der Norm
-NORM 'OEN' 'en1992-2004' CAT 'A'  unit 0 !
+NORM OEN en199X-200X unit 0 !
 $----------------------------------------------------------------------------------
 !*! Umfang der Ausgabe
 echo full extr
@@ -176,14 +180,14 @@ end
 ```
 
 ## Modelleingabe
-Es wird das Modul SOFIMSHC verwendet, dass mit Strukturelementen arbeitet.
+Es wird das Modul `SOFIMSHC` verwendet, dass mit Strukturelementen arbeitet.
 Es werden z.B.:
-- Strukturpunkte (SPT)
-- Strukturlinien (SLN)
-- Strukturflächen (SAR)
+- Strukturpunkte (`SPT`)
+- Strukturlinien (`SLN`)
+- Strukturflächen (`SAR`)
 erstellt.
 Die Vernetzung der Strukturelement erfolgt nach der Berechnung des Moduls im Hintergrund.
-Alternativ kann auch der Modul SOFIMSHA verwendet werden, wo direkt mit Finiten Elementen gearbeitet wird. 
+Alternativ kann auch der Modul `SOFIMSHA` verwendet werden, wo direkt mit Finiten Elementen gearbeitet wird. 
 
 ```
 +prog sofimshc
@@ -212,13 +216,18 @@ end
 ```
 
 ## Definition-der-Einwirkungen
-
+Diese Definition in  `SOFILOAD` dient der Benennung der Einwirkungen  und um ggf. Sicherheitsbeiwerte und Kombinationsbeiwerte explizit du anzupassen - mehr dazu siehe Kommentare im Code unten:
 
 ```
 +prog sofiload
 head 'Definition der Einwirkungen'
 echo full extr
 ! Hier werden die Sicherheitsbeiwerte und Kombinationsbeiwerte definiert
+
+! Ohne eine explizite EIngabe der Sicherheitsbeiwerte und Kombinationsbeiwerte werden
+! die im Programm vordefinierten Werte genommen (Auswahl Norm und Kategorie von Anwender).
+! Altrnativ ist es möglich, wie unten kommentiert dargestellt, diese Werte auch explizit anzugeben,
+! falls die ggf. erforderlich ist.        
 
 !Ständige Lasten
     ACT G   $GAMU 1.35 GAMF 1.00 PSI0 1.00 PSI1 1.00 PSI2 1.00 PS1S 1.00 PART G  SUP PERM TITL 'STäNDIGE LASTEN'
@@ -246,30 +255,35 @@ head 'Definition der Lasten - Ständige'
 
 !*!Label EGW
 lc 1 facd 1.0 type G_1 titl 'EGW'
+! Mit "facd" wird das Eigengewicht gem. in Projektdefinition vorgegebener Richtung der Schwerkraft
+! der Querschnittsflächen und der Materialwichte, ermittelt.
+
 
 end 
 ```
 
 Veränderliche Lasten:
 ```
-+prog sofiload
++prog sofiload urs:7
 head 'Definition der Lasten - Veränderliche'
 
 !*!Label Nutzlast
 lc 10 type Q titl 'Nutzlast'
-poin auto type pg p 10 x 3 y -3.15
+poin auto type pg p 50 x 3 y -3.15
+! Wir definieren beispielhaft eine punktuelle Nutzlast in der Mitte der Decke
 
 !*!Label Schneelast
 lc 20 type S titl 'Schneelast'
 $beam grp 2 type pg pa 0.8 $ wir können die Linienlast über Referenz zu der Stabgruppe aufbringen
 $line auto type pg p1 0.8 x1 0 y1 -3.15 x2 6 y2 -3.15 ! Linienlast über Referenz zu globalen Koordinaten
 line sln 2 type pg p1 0.8 ! Linienlast über Referenz zu strukturlinie
+! wie oben aufgezeigt, kann eine Linienlast über mehrere Wege definiert werden
 
 !*!Label Windlast
 lc 30 type W titl 'Windlast'
 beam grp 1 type pxx pa 1
 
-end     
+end       
 ```
 
 ## Berechnung
@@ -385,7 +399,7 @@ end
 
 ## Bemessung-der-Stabelemente
 
-Die Bemessung der Stabelemente erfolgt im Modul AQB. In der zweiten Übung wird auch die Bemessung der Flächenelemente mit dem Modul BEMESS vorgestellt.
+Die Bemessung der Stabelemente erfolgt im Modul `AQB`. In der zweiten Übung wird auch die Bemessung der Flächenelemente mit dem Modul `BEMESS` vorgestellt.
 
 GZT Bemessung:
 ```
@@ -427,7 +441,211 @@ nstr serv ksb sl ksv sl crac yes cw 0.3 ! Rissbreitennachweis
 end 
 ```
 ## Ergebnisausgabe
+Im folgenden werden folgende Ausgaben der Ergebnisse dargestellt:
+- graphisch Ausgabe: der Code kann über das Programm `SOFiSTiK Graphic` exportiert werden, unten ist der Code "gesäubert" dargestellt;
+- tabellarische Ausgabe: der Code kann über das Programm `SOFiSTiK Results viewer` exportiert werden, unten ist der Code "gesäubert" dargestellt;
+- Excel Ausgabe: es ist möglich Ergebnisse auch in ein Excel Workbook zu exportieren und dann nachfolgende Nachweise z.B. dort weiterzuführen
+
+### Graphische Ausgabe
 
 ```
-Noch zu ergänzen
++PROG WING urs:14
+HEAD 'Schnittgrößen'
+
+PAGE LANO 0                       ! Ausgabe in Deutsch
+SIZE -4 SC 50 FORM URS SPLI '3*1' ! A4 Blatt Vertikal, Maßstab 1:50, 3 Abbildungen über die Blatthöhe
+
+LET#lf 1,10,20,30  ! wir definieren eine lokale Variable (bzw. Vektor mit 4 Werten), und zwar die Lastfallnummern
+
+! In Sofistik können Schleifen definiert werden, anbei eine einfache Schleife, die von dem Vektor "#lf" die Anzahl der einträge übernimmt (4, also die Schleife läuft 4x)
+! und der interne Zähler der Schleife ist die Variable "#i" mit der wir in jedem Schleifenlauf den nächsten Wert des Vektors "#lf" lesen
+! Achtung: LET ist eine lokale Variable die nur in diesem +prog WING modul gespeichert ist
+! STO wäre eine globale Variable, die über die ganze Berechnung in allen Modulen zu verfügung stehen würde.
+! Es ist sinnvoll darauf zu achten die STO nur dann zu verwenden, wenn man diese Funktion benötigt und sonst mit LET zu arbeiten.
+
+loop#i lf
+    ! Biegemoment My, Schriftgröße 0.3cm
+    LC   NO #lf(#i) ; BEAM TYPE MY UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+    ! Querkraft Vz, Schriftgröße 0.3cm
+    LC   NO #lf(#i) ; BEAM TYPE Vz UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+    ! Normalkraft N
+    LC   NO #lf(#i) ; BEAM TYPE N UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+endloop
+
+! mit einer neuen Definition SIZE, wird sichergestellt, das die folgenden Ergebnisse am neuen Blatt gedruckt werden
+SIZE -4 SC 50 FORM URS SPLI '3*1' ! A4 Blatt Vertikal, Maßstab 1:50, 3 Abbildungen über die Blatthöhe
+
+! Wir können aber natürlich auch einzeln die Ergebnisse darstellen, z.B. für GZT
+
+! Biegemomente in separaten Bildern
+! max Biegemoment My, Schriftgröße 0.3cm
+LC   NO 2129 ; BEAM TYPE MY UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+! min Biegemoment My
+LC   NO 2130 ; BEAM TYPE MY UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+
+! Oder mit der AND funktion überlagert am Blatt
+! max Biegemoment My, Schriftgröße 0.3cm
+LC   NO 2129 ; BEAM TYPE MY UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+and
+! min Biegemoment My
+LC   NO 2130 ; BEAM TYPE MY UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+
+END
+
+! wenn mehrere gleiche Module hintereinander berechnet werden
+! in diesem Fall WING, kann auf das +prog verzichtet werden
+! das Ergebniss ist, dass die Berechnung schneller läuft, da
+! das Modul nicht jedesmal geschlossen und neu gestartet wird
+
+HEAD 'Auflagerkräfte'
+
+PAGE LANO 0
+SIZE -4 SC 50 FORM URS SPLI '2*1'
+
+! Auflagerkraft in X Richtung global
+LC   NO 2121 ; NODE TYPE SX UNIT DEFA SCHH 0.3 FILL NO
+and
+LC   NO 2122 ; NODE TYPE SX UNIT DEFA SCHH 0.3 FILL NO
+
+! Auflagerkraft in Y Richtung global
+LC   NO 2123 ; NODE TYPE SY UNIT DEFA SCHH 0.3 FILL NO
+and
+LC   NO 2124 ; NODE TYPE SY UNIT DEFA SCHH 0.3 FILL NO
+
+END
+
+HEAD 'Verschiebungen und Verdrehungen'
+
+PAGE LANO 0
+SIZE -4 SC 50 FORM URS SPLI '2*1'
+
+! Verschiebungen GZG Quas-Ständig in X Richtung
+LC   NO 1420+13 ; NODE TYPE UX UNIT DEFA SCHH 0.3 FILL NO
+LC   NO 1420+14 ; NODE TYPE UX UNIT DEFA SCHH 0.3 FILL NO
+
+! Verschiebungen GZG Quas-Ständig in Y Richtung
+LC   NO 1420+15 ; NODE TYPE UY UNIT DEFA SCHH 0.3 FILL NO
+LC   NO 1420+16 ; NODE TYPE UY UNIT DEFA SCHH 0.3 FILL NO
+
+END      
+```
+
+### Tabellarische Ausgabe
+Mit dem Modul `RESULTS` können Ergebnisse graphisch (Diagramme) oder tabellarisch ausgegeben werden. 
+
+```
++PROG RESULTS
+HEAD 'Tabelarische Ausgabe Schnittgrößen'
+
+PAGE LANO 0                       ! Ausgabe in Deutsch
+SIZE TYPE "-URS" SPLI "2x1"
+
+LC   NO 1
+! Normalkräfte von Stäben
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+BEAM TYPE    N STYP BEAM REPR DLST
+! Querkraft von Stäben
+AND $ damit gleiche Tabelle, neue Spalte
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+BEAM TYPE   VZ STYP BEAM REPR DLST
+! Biegemomente von Stäben
+AND
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+BEAM TYPE   MY STYP BEAM REPR DLST
+
+END  
+```
+
+### Excel Ausgabe
+Es ist möglich Ergebnisse oder Modelangaben über einen Task wie in dem [Video](https://sofistikforyou.com/how-to-generate-a-xlsx-file/) gezeigt zu exportieren.
+Alternativ können aber die Daten auch über den Code im `RESULTS` Modul automatisch exportiert werden. 
+Im folgenden werden die Schnittgrößen (maximale Drucknormalkraft und dazugehöriges Biegemoment) in das [hier zur Verfügung gestelltes Excel](https://aiztok.github.io/SBB/docs/CONC_Knicken_stahlbetonstuetze.xlsx) zur Ermittlung der Schlankheit / Grenzschlankheit und des Biegemomentes unter Theorie 2. Ordnung gem. EN 1992-1-1, Kap. 5.8, exportiert. Dafür muss das xlsx im gleichen Ordner wie die Sofistik Datei abgelegt sein.
+Der Code unten erzeugt neue bzw. überschreibt existierende Worksheets in der Exceldatei.
+
+```
++prog results urs:18
+head 'Export ins xlsx Format'
+
+! ein Doppeltes Dollar $$ ist ein umbruch, die Zeilen werden von der Software
+! gelesen als ob es die gleiche Zeile wäre - praktisch bei langen Eingaben um es
+! trotzdem auf dem Bildschirm zu sehen, ohne das Fenster zu verschieben
+xlsx "CONC_Knicken_stahlbetonstuetze.xlsx" WS "SOFi_Erg" $$
+ROW 2 COL 1
+
+! Export der maximalen Druckkraft in der Wand und des dazugehörigen Biegemoments
+grp 1 ! nur die Wandelemente
+
+LC   NO 2120+2 ! min N
+! Normalkräfte NEd von Stäben
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+BEAM TYPE    N STYP BEAM REPR DLST
+! Biegemomente MEd von Stäben
+AND
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+BEAM TYPE   MY STYP BEAM REPR DLST
+! Biegemomente MEd von Stäben
+AND
+LC   NO 1420+9 ! Auch Quasi-Ständig My wird benötigt
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+BEAM TYPE   MY STYP BEAM REPR DLST
+
+end
+
++prog results urs:15
+head 'Querschnittswerte'
+
+xlsx "CONC_Knicken_stahlbetonstuetze.xlsx" WS "SOFi_QS" $$
+ROW 2 COL 1
+
+LC   SECT 1 ! Auswahl Querschnittsnummer
+$ Nummer des Querschnitts
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+STRU TYPE  ENO ETYP SECT REPR DLST
+$ Querschnittsfläche
+AND
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+STRU TYPE    A ETYP SECT REPR DLST
+$ Trägheitsmoment um die Y Achse
+AND
+TXTP SHOW SIGN OVLP AMAX EXTR  YES
+STRU TYPE   IY ETYP SECT REPR DLST
+
+END 
+```
+
+## Extra
+**Erzeugte Einwirkungskombinationen nachvollziehen**
+
+Insbesondere bei Einwirkungskombinationen wo viele Einwirkungen kombiniert werden, ist es sinnvoll für die kritischen Schnitte (z.B. Auflager, Feldmitte) sich die automatisch erzeugten Einwirkungskombinationen anzeigen zu lassen um zu prüfen ob richtige Einwirkungen mit richtigen Sicherheits- und Kombinationsbeiwerten angesetzt worden sind.
+Diese Kombination wird dann in `SOFILOAD` in ein Lastfall umgeformt werden und danach explizit in `ASE` berechnet werden. Ein sinnvolles wenn:
+- mit einer linearen Berechnung die vermutlich maßgebenden Einwirkungskombinationen ermittelt werden und danach eine nichtlineare Berechnung nur für diese maßgebenden Kombinationen durchgeführt wird.
+	*Hinweis: dies ist korrekt nur für System wo die Nichtlinearitäten das Verhalten des Gesamtsystems nicht ändern. Z.B. in Ordnung für Fachwerkträger, wo Druckstreben mittels Theorie 2. Ordnung gerechnet werden, aber nicht in Anwendbar bei Seilkonstruktionen, die müssen mittels Theorie 3. Ordnung berechnet werden, nichtlinear Steifigkeit der einzelnen Bauteile hat Einfluss auf das Gesamtsystem*
+- um dazugehörige Schnittgrößen oder Verformungen schnell zu ermitteln
+	*Hinweis: hier ist auch `AQUA` RSET  nützlich*
+
+
+```
++prog maxima
+head 'Track EWK'
+echo full
+
+trac 2120+9 etyp beam elem 204 x 0 csav 801
+
+end
+
++prog sofiload urs:10
+head 'Umformen gespeicherte Kombination in Lastfall'
+
+lc 900 type none
+copy 801 comb
+
+end
+
++prog ase urs:9
+head 'Berechnung'
+
+lc 900
+
+end 
+
 ```
