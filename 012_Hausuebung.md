@@ -82,7 +82,10 @@ Folgende Einwirkungen sind zu berücksichtigen:
 - Zugkraft der vorgespannten Dachkonstruktion
 
 Die Zugkräfte im Dach werden wie folgend abgeschätzt:
-$N = g * L^2 / (8*f)$
+```math
+N = g * L^2 / (8*f)
+```
+
 *N - Zugkraft
 g - Gleichlast
 L - Spannweite
