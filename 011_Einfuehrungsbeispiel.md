@@ -405,8 +405,16 @@ GZT Bemessung:
 ```
 +prog aqb urs:11
 head 'GZT Bemessung Stäbe'
-echo full extr
+echo full extr ! Komplette textliche Ausgabe der Ergebnisse
 page lano 0
+
+! Wichtige Eingabe REIN
+! Mit MOD wird gesteuert ob die ermittelte Bewehrung
+! nur im Bemessungsschnitt eingelegt wird ("sect")
+! oder über den gesamte Stabdefinition ("beam")
+! Mit RMOD wird gesteurt ob diese Bewehrung akkumuliert wird ("accu")
+! und in welchen Speicherfall LCR wird die gespeichert.
+rein mod sect rmod accu lcr 1
 
 beam grp 1,2 ! wir können auswählen welche Gruppe soll bemessen werden
 
@@ -414,11 +422,9 @@ beam grp 1,2 ! wir können auswählen welche Gruppe soll bemessen werden
 $lc 21??
 lc (d) ! alle gespeicherten Lastfälle
 
-rein beam rmod save lcr 1
-
 desi ulti ksv uld ksb uld
 
-end     
+end   
 ```
 
 GZG Bemessung:
@@ -428,18 +434,19 @@ head 'GZG Bemessung Stäbe'
 echo full extr
 page lano 0
 
+rein mod sect rmod accu lcr 1 ! wir nehmen die Ergebnisse aus GZT und falls mehr Bew. erforderlich (Rissbreite) wird es akkumuliert.
+
 beam grp 1,2 ! wir können auswählen welche Gruppe soll bemessen werden
 
 ! Auswahl der Lastfälle für die Bemessung
 $lc 14??
 lc (p) ! alle gespeicherten Lastfälle
 
-rein beam rmod accu lcr 1 ! wir nehmen die Ergebnisse aus GZT und falls mehr Bew. erforderlich (Rissbreite) wird es akkumuliert.
-
 nstr serv ksb sl ksv sl crac yes cw 0.3 ! Rissbreitennachweis
 
 end 
 ```
+
 ## Ergebnisausgabe
 Im folgenden werden folgende Ausgaben der Ergebnisse dargestellt:
 - graphisch Ausgabe: der Code kann über das Programm `SOFiSTiK Graphic` exportiert werden, unten ist der Code "gesäubert" dargestellt;
