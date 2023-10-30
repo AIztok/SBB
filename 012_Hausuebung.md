@@ -90,14 +90,20 @@ N = g * L^2 / (8*f)
 g - Gleichlast
 L - Spannweite
 f - Durchhang*
-$$g = B*H*\rho=10 m*0,3 m*25 kN/m=75 kN/m;  
+```math
+g = B*H*\rho=10 m*0,3 m*25 kN/m=75 kN/m;  
 L = 150 m;
-f = 15 m$$
+f = 15 m
+```
 Zugkraft aus EGW:
-$$N_k = 75 kN/m * (150m)^2/(8*15m) =  14000kN$$
+```math
+N_k = 75 kN/m * (150m)^2/(8*15m) =  14000kN
+```
+
 Für die veränderliche Lasten (z.B. Schnee), nehmen wir an eine q = 10 kN/m und somit eine Zugkraft von:
-$$ N_q = 10 kN/m * (150m)^2/(8*15m) =  1875kN
-$$
+```math
+N_q = 10 kN/m * (150m)^2/(8*15m) =  1875kN
+```
 
 ## Pont La Fayette Paris
 
