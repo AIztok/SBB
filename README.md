@@ -8,6 +8,8 @@ Inhalt:
 
 [011. 1. Übung - Einführungsbeispiel](https://aiztok.github.io/SBB/011_Einfuehrungsbeispiel.html)
 
+[012. 1. Hausübung](https://aiztok.github.io/SBB/012_Hausuebung.html)
+
 [021. 2. Übung - Hallenbinder](https://aiztok.github.io/SBB/021_Uebung.html)
 
 [022. 2. Übung - Unterzug](https://aiztok.github.io/SBB/022_Uebung.html)
