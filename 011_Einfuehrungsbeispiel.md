@@ -47,7 +47,11 @@ Das neue Projekt wird anhand einer Anwendervorlage erstellt.
 Die Anwendervorlage kann [hier](https://aiztok.github.io/SBB/docs/FH_SBB_SSD-Vorlage_V01.sofistix) heruntergeladen werden.
 Somit ist die Norm und andere Systeminformationen (2D oder 3D, Z-Richtung, Gruppendivisor) bereits vor eingestellt. 
 
-Wir öffnen das Programm SOFiSTiK SSD 2023 (oder auch neuer) und wählen die oben heruntergeladene Datei als Anwendervorlage. 
+Wir öffnen das Programm SOFiSTiK SSD 2023 (oder auch neuer) 
+
+![Animation_Search_SSD2023](/docs/assets/images/Animation_Search_SSD2023.gif)
+
+und wählen die oben heruntergeladene Datei als Anwendervorlage. 
 > In der Lehrveranstaltung wird auch das Erstellen der Anwendervorlage gezeigt.
 
 ![SSD vorlage](/docs/assets/images/SSD_Vorlage.png)
