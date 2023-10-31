@@ -45,18 +45,38 @@ Iztok Arnuga
 <!-- .slide: data-transition="zoom" -->
 <!-- .slide: data-background-color="lightblue" -->
 
-Ableitung Berechnungsmodell aus realen Bauwerk
+Grundkenntnisse der FE Modellierung
+
+```python [1|7-12]
+def local_beam_element_stiffness(nodes, element):
+    """Calculate local element stiffness matrix for a beam element."""
+    node1, node2, E, A, I = element
+    x1, y1 = nodes[node1]
+    x2, y2 = nodes[node2]
+    L = np.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+    k_local = E * np.array([[A/L, 0, 0, -A/L, 0, 0],
+                            [0, 12*I/L**3, 6*I/L**2, 0, -12*I/L**3, 6*I/L**2],
+                            [0, 6*I/L**2, 4*I/L, 0, -6*I/L**2, 2*I/L],
+                            [-A/L, 0, 0, A/L, 0, 0],
+                            [0, -12*I/L**3, -6*I/L**2, 0, 12*I/L**3, -6*I/L**2],
+                            [0, 6*I/L**2, 2*I/L, 0, -6*I/L**2, 4*I/L]])
+    return k_local
+```
 </script></section><section data-markdown><script type="text/template">
 <!-- .slide: data-transition="zoom" -->
 <!-- .slide: data-background-color="lightblue" -->
 
 Wahl eines geeigneten FE-Modells
 > FE = Finite Elemente
+
 </script></section><section data-markdown><script type="text/template">
 <!-- .slide: data-transition="zoom" -->
 <!-- .slide: data-background-color="lightblue" -->
 
-Grundkenntnisse der FE Modellierung
+Ableitung Berechnungsmodell aus realen Bauwerk
+
+![Froschgrundseebruecke](Froschgrundseebruecke.png) <br/>
+
 </script></section><section data-markdown><script type="text/template">
 <!-- .slide: data-transition="zoom" -->
 <!-- .slide: data-background-color="lightblue" -->
@@ -82,21 +102,21 @@ Erstellung Bericht der Standsicherheit gem. ONR24005
 </script></section><section data-markdown><script type="text/template">
 <!-- .slide: data-background-color="#ffcc66" -->
 
-**20.10.2023**  1. Einheit: Einführung <!-- .element: class="fragment" data-fragment-index="1" -->
+**02.11.2023**  1. Einheit: Einführung <!-- .element: class="fragment" data-fragment-index="1" -->
 
-**02.11.2023 (23:59)** Abgabe 1. Übung <!-- .element: class="fragment" data-fragment-index="2" -->
+**15.11.2023 (23:59)** Abgabe 1. Übung <!-- .element: class="fragment" data-fragment-index="2" -->
 </script></section><section data-markdown><script type="text/template">
 <!-- .slide: data-background-color="#ffcc66" -->
 
-**03.11.2023** 2. Einheit: Modellierung u. Bemessung  <!-- .element: class="fragment" data-fragment-index="1" -->
+**16.11.2023** 2. Einheit: Modellierung u. Bemessung  <!-- .element: class="fragment" data-fragment-index="1" -->
 </script></section><section data-markdown><script type="text/template">
 <!-- .slide: data-background-color="#ffcc66" -->
 
-**17.11.2023** 3. Einheit: Übungsbeispiel<!-- .element: class="fragment" data-fragment-index="1" -->
+**14.12.2023** 3. Einheit: Übungsbeispiel<!-- .element: class="fragment" data-fragment-index="1" -->
 
-**23.11.2023 (23:59)** Abgabe 2. Übung <!-- .element: class="fragment" data-fragment-index="2" -->
+**13.12.2023 (23:59)** Abgabe 2. Übung <!-- .element: class="fragment" data-fragment-index="2" -->
 
-**07.12.2023 (23:59)** Abgabe 3. Übung <!-- .element: class="fragment" data-fragment-index="3 " -->
+**18.01.2023 (23:59)** Abgabe 3. Übung <!-- .element: class="fragment" data-fragment-index="3 " -->
 </script></section></section><section ><section data-markdown><script type="text/template">
 ## Noten
 </script></section><section data-markdown><script type="text/template">
@@ -105,6 +125,8 @@ Erstellung Bericht der Standsicherheit gem. ONR24005
 - 1. Übung **15 Pkt + 5** <!-- .element: class="fragment" data-fragment-index="1" -->
 - 2. Übung **30 Pkt + 5** <!-- .element: class="fragment" data-fragment-index="2" -->
 - 3. Übung **40 Pkt + 5** <!-- .element: class="fragment" data-fragment-index="3" -->
+
+- Abwesenheit im Oktober **+5** <!-- .element: class="fragment" data-fragment-index="4" -->
 </script></section></section><section ><section data-markdown><script type="text/template">
 ## Kommunikation
 </script></section><section data-markdown><script type="text/template">
@@ -113,14 +135,10 @@ Erstellung Bericht der Standsicherheit gem. ONR24005
 Fragen per **Email** <br/>
 Antwort per **Email** & **Moodle** im Forum
 </script></section></section><section  data-markdown><script type="text/template">
-
 Unterlagen, Infos und mehr</br>
 [https://aiztok.github.io/SBB/](https://aiztok.github.io/SBB/)
 <iframe title="SBB" frameborder="0" width="100%" height="500pt" src="https://aiztok.github.io/SBB/"></iframe>
 
-</script></section><section  data-markdown><script type="text/template">## [Menti.com](https://www.menti.com) Abfrage
-
-<iframe title="Menti-1" frameborder="0" width="100%" height="500pt" src="https://www.mentimeter.com/app/presentation/alckn171r4z9enspdh7qgcf4ad9b3ybk/9evy8k89hypg/edit"></iframe>
 </script></section><section ><section data-markdown><script type="text/template">
 ## Ablauf 1. Übungseinheit
 </script></section><section data-markdown><script type="text/template">
@@ -129,17 +147,25 @@ Unterlagen, Infos und mehr</br>
 - 1:10 Block 2 <!-- .element: class="fragment" data-fragment-index="2" -->
 - 10 min Pause <!-- .element: class="fragment" data-fragment-index="3" -->
 - 1:00 Block 3  <!-- .element: class="fragment" data-fragment-index="4" -->
-</script></section></section><section ><section data-markdown><script type="text/template">
-## Finite Elemente Methode
+</script></section></section><section  data-markdown><script type="text/template">## [Menti.com](https://www.menti.com) Abfrage
 
+<iframe title="Menti-1" frameborder="0" width="100%" height="500pt" src="https://www.mentimeter.com/app/presentation/alckn171r4z9enspdh7qgcf4ad9b3ybk/9evy8k89hypg/edit"></iframe>
+</script></section><section ><section data-markdown><script type="text/template">
+## Finite Elemente Methode
 </script></section><section data-markdown><script type="text/template">
-test
-</script></section></section><section ><section data-markdown><script type="text/template">
+Basis: Hooke'sche Gesetz <br/>
+`$$ F = K*u $$`
+</script></section><section data-markdown><script type="text/template">
+Die Ermittlung der Verschiebungen und Schnittgrößen für das Einfürungsbeispiel <br/>
+
+[Python code auf Google Colab](https://colab.research.google.com/drive/1Yio_5SlEL6frEUguNEkPdDJhUXO9Q-f7?usp=sharing) <br/>
+![Colab](Colab.png) </script></section></section><section ><section data-markdown><script type="text/template">
 ## SOFiSTiK
 Warum SOFiSTiK? <br/>
-Warum Teddy (text editor) / cadinp Programmiersprache
+Warum Teddy (text editor) <br/> 
+cadinp Programmiersprache
 
-```python [1|3-6]
+```python [1|4]
 +prog template
 loop#i 10
     txb 
@@ -165,13 +191,16 @@ Was müssen wir dann noch machen?
 </script></section><section data-markdown><script type="text/template">
 
 <!-- .slide: data-transition="zoom" -->
-<!-- .slide: data-background-gradient="linear-gradient(to bottom, #0000ff, #33cc33)" -->
 <!-- .slide: data-background-transition="zoom" -->
 
 ## [SOFiChatbot](https://sofichatbot.streamlit.app/)
 
 Um die Arbeit mit SOFiSTiK etwas zu erleichtern
 </script></section></section><section ><section data-markdown><script type="text/template">
+## Einführungsbeispiel
+
+![Animation_Search_SSD2023.gif](Animation_Search_SSD2023.gif) <!-- .element height="50%" width="50%" -->
+</script></section><section data-markdown><script type="text/template">
 ## Schritt 1: Entwurf der Konstruktion <br/>
 Funktionale und gestalterische Anforderungen 
 ![Terassendach_Bild](Terassendach_StB.png) <br/>
@@ -184,10 +213,38 @@ Abmessungen: Querschnitte   <!-- .element: class="fragment fade-in-then-semi-out
 
 Modellbildung Berechnung: Stützweite, Stab/Flächen/Volumenmodell, was wird vernachlässigt   <!-- .element: class="fragment fade-in-then-semi-out" --> 
 </script></section><section data-markdown><script type="text/template">
-<iframe title="Menti-1" frameborder="0" width="100%" height="600pt" src="https://colab.research.google.com/drive/1Yio_5SlEL6frEUguNEkPdDJhUXO9Q-f7?usp=sharing"></iframe>
-</script></section></section><section  data-markdown><script type="text/template">
+## Schritt 3: Erstellung des Berechnungsmodels <br/>
 
-</script></section></div>
+<iframe title="Einfuehrungsbeispiel" frameborder="0" width="100%" height="600pt" src="https://aiztok.github.io/SBB/011_Einfuehrungsbeispiel.html"></iframe>
+</script></section><section data-markdown><script type="text/template">
+## Schritt 4: Plausibilisierung der Ergebnisse <br/>
+
+Z.B. Biegebemessung <br/>
+`$$ A_s,erf = M_Ed / (z * f_yd) $$`
+`$$ A_s,erf = 0.244MNm*1.15/(0.9*0.25m*550MPa) $$`
+`$$ A_s,erf = 22.7cm^2 $$`
+</script></section><section data-markdown><script type="text/template">
+Warum die Ergebnisse nicht  komplett übereinstimmen? <br/>
+
+Software berücksichtigt ein bilineares Spannungs-Dehnungsdiagramm mit Verfestigung <!-- .element: class="fragment fade-in-then-semi-out" -->
+
+Der innere Hebelarm wird genau anhand einer Dehnungsiteration ermittelt <!-- .element: class="fragment fade-in-then-semi-out" -->
+
+</script></section><section data-markdown><script type="text/template">
+## Letzter Schritt:
+Was hat die Berechnung nicht gemacht? <br/>
+
+- Bemessung des Rahmenknotens <!-- .element: class="fragment" data-fragment-index="1" -->
+- Bemessung des Auflagerbereichs (Spaltzug, Teilflächenbelastung) <!-- .element: class="fragment" data-fragment-index="2" -->
+- Detailausbildung (Bewehrungsführung) bei den Aussparrungen für die Beleuchtung <!-- .element: class="fragment" data-fragment-index="3" -->
+</script></section></section><section  data-markdown><script type="text/template">
+## 1. Hausaufgabe:
+
+Anweisung auf der Internetseite, Abgabe via Moodle
+
+<iframe title="SBB" frameborder="0" width="100%" height="500pt" src="https://aiztok.github.io/SBB/012_Hausuebung.html"></iframe>
+</script></section><section  data-markdown><script type="text/template">
+Danke und schönen Abend!</script></section></div>
     </div>
 
     <script src="./dist/reveal.js"></script>
