@@ -10,9 +10,9 @@ Inhalt:
 
 [012. 1. Hausübung](https://aiztok.github.io/SBB/012_Hausuebung.html)
 
-[021. 2. Übung - Hallenbinder](https://aiztok.github.io/SBB/021_Uebung.html)
+[013. Q&A zur Hausübung](https://aiztok.github.io/SBB/013_Q&A_zur_Hausuebung.html)
 
-[022. 2. Übung - Unterzug](https://aiztok.github.io/SBB/022_Uebung.html)
+[021. 2. Übung - Unterzug](https://aiztok.github.io/SBB/021_Uebung-Unterzug.html)
 
 [031. 3. Übung](https://aiztok.github.io/SBB/031_Uebung.html)
 
