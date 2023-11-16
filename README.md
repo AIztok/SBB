@@ -12,7 +12,11 @@ Inhalt:
 
 [013. Q&A zur Hausübung](https://aiztok.github.io/SBB/013_Q&A_zur_Hausuebung.html)
 
+[020. 2. Übung - Slides](https://aiztok.github.io/SBB/slides_2/index.html)
+
 [021. 2. Übung - Unterzug](https://aiztok.github.io/SBB/021_Uebung-Unterzug.html)
+
+[022. 2. Hausübung](https://aiztok.github.io/SBB/022_Hausuebung.html)
 
 [031. 3. Übung](https://aiztok.github.io/SBB/031_Uebung.html)
 
