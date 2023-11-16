@@ -25,5 +25,5 @@ Ein paar allgemeine Informationen:
 
 >Zusätzliche Informationen werden so dargestellt.
 
-
+Die Slides wurden mit [Reveal.js](https://revealjs.com/) und [Reveal-md](https://github.com/webpro/reveal-md) erstellt.
 
