@@ -70,16 +70,16 @@ ctrl rest 2 ! Steuerung, dass die Angaben des vorherigen AQUA nicht überschrieb
 
 $----------------------------------------------------------------------------------
 !*! Querschnitt Plattenbalken - einfach
-SREC 1 H 0.5 B 0.3 HO 0.28 BO 1.85 MNO 1 MRF 101 SO 0.04[m] titl 'T-beam simple'
+SREC 1 H 0.60 B 0.3 HO 0.28 BO 3.7 MNO 1 MRF 101 SO 0.04[m] titl 'T-beam simple'
 
 $----------------------------------------------------------------------------------
 !*! Querschnitt Plattenbalken - mit polygon punkten
 SECT NO  2  MNO  1 MRF 101 titl 'T-beam Poly' ! QS-Definition über Polygonpunkte
 
-let#h  0.50[m] ! Lokale Variable für die Querschnittshöhe
+let#h  0.60[m] ! Lokale Variable für die Querschnittshöhe
 let#b  0.30[m] ! Lokale Variable für die Stegbreite
 let#ho 0.28[m] ! Obergurtdicke
-let#bo 1.85[m] ! Lokale Variable für die Obergurtbreite
+let#bo 3.70[m] ! Lokale Variable für die Obergurtbreite
 
 !*! Spannungspunkte - wo wir die Spannungen ermitteln wollen
 $ Oberkante
@@ -111,19 +111,19 @@ $-------------------------------------------------------------------------------
 !*! Verbundquerschnitt
 SECT NO 3 MNO 301 TITL 'SBV QS'
 PROF NO TYPE     Z1    ZM          DTYP    REF  MNO=301
-     1  heb     300    280[mm]     S       UM
+     1  heb     500    280[mm]     S       UM
 POLY O MNO 2
-VERT NO   Y      Z         TYPE
-   1    925[mm]  0[mm]     O
-   2   -925[mm]  0[mm]     O
-   3   -925[mm]  280[mm]   O
-   4    925[mm]  280[mm]   O
+VERT NO   Y           Z         TYPE
+     1    3700/2[mm]  0[mm]     O
+     2   -3700/2[mm]  0[mm]     O
+     3   -3700/2[mm]  280[mm]   O
+     4    3700/2[mm]  280[mm]   O
 ! Schubschnitt zur Bemessung der Verbunddübel
 ! weil mit Dickwandigen-QS gearbeitet, muss der Schubschnitt ca. um die Verbunddübel herum geführt werden
 CUT 1 YB +100[mm] ZB 280[mm] YE +100[mm] ZE 125[mm]  MNO 2 MRF 101
     1 YB +100[mm] ZB 125[mm] YE -100[mm] ZE 125[mm]  MNO 2
     1 YB -100[mm] ZB 125[mm] YE -100[mm] ZE 280[mm]  MNO 2 MRF 101
-
+      
 end 
 ```
 ## Modelleingabe
@@ -297,25 +297,25 @@ Stabschnittgrößen Lastfall 1 EGW:
  | Grp | Nummer |      x    |    N   |    Vy   |    Vz     |   Mt     |   My    |    Mz|
  |---|---|---|---|---|---|---|---|---|
  | | | [m]   |  [kN]  |   [kN]  |   [kN]  |   [kNm]   |  [kNm] |    [kNm] |
- |  1    |1006 |  0.00    |  0.00  |   0.00 |   -3.06   |   0.00 |  179.65 |     0.00|
+ |  1    |1006 |  0.00    |  0.00  |   0.00 |   -4.49   |   0.00 |  342.71 |     0.00|
 
 Stabschnittgrößen ohne PLABA Plattenbalkenanteil:
 
  | Grp | Nummer |      x    |    N   |    Vy   |    Vz     |   Mt     |   My    |    Mz|
  |---|---|---|---|---|---|---|---|---|
  | | | [m]   |  [kN]  |   [kN]  |   [kN]  |   [kNm]   |  [kNm] |    [kNm] |
- |  1    |1006 |  0.000    |  0.00  |   0.00 |   -1.67   |   0.00 |  96.61 |     0.00|
+ |  1    |1006 |  0.000    |  0.00  |   0.00 |   -3.12   |   0.00 |  193.48 |     0.00|
 
 Statistik Stab- Zusatzschnittgrößen Plattenbalken:
 
  | Qnr | bm |     N   |    Vz     |   My   |    N   |    Vz     |   My   |
  |---|---|---|---|---|---|---|---|
  | | | [m]   |  [kN]  |   [kN]  |   [kN]  |   [kNm]   |  [kNm] |    [kNm] |
- |  1    |1.85 |  0.000    |  91.97  |   179.65 |   0.00   |   27.21 |  83.04 |
+ |  1    |3.70 |  0.000    |  126.11  |   342.71 |   0.00   |   25.77 |  149.23 |
 
 Summiert = Stab ohne PLABA + Plattenanteil
 ```math
-179.65 kNm = 96.61 kNm + 83.04 kNm
+342.7 kNm = 193.5 kNm + 149.2 kNm
 ```
 
 ## Überlagerung der Ergebnisse
@@ -450,6 +450,289 @@ nstr serv ksb sl ksv sl crac yes cw 0.3 ! Rissbreitennachweis
 end
 ```
 ## Bemessung der Flächenelemente
+Die Flächenelemente werden mit dem Modul `BEMESS` bemessen, hier unterteilen wir die einzelnen Definitionen in mehrere `BEMESS` Module:
+- Definition der geometrischen Parameter (Lage der Bewehrung) und der Bemessungsparameter (Rissbreite, Ausgangsbewehrung)
+- Bemessung im Grenzzustand der Tragfähigkeit
+- Bemessung im Grenzzustand der Gebrauchstauglichkeit - Rissweite
+
+Definition der Parameter:
+```code
++prog bemess
+head 'Definition der Bewehrungsparameter'
+echo full extr
+
+! Definition der Abstände der Bewehrungslagen
+! ha/hb ... Abstand von Bauteilrand zur oberen/unteren Hauptbewehrung
+! dha/dhb ... Abstand zwischen der oberen/unteren Querbewehrung zu Hauptbewehrung
+geom - ha 25+10/2 dha 10 hb 25+10/2 dhb 10
+
+! Winkel der Bewehrung zu der lokalen Achse der Platten
+dire upp 0 low 0
+
+! Eingabe der Parameter für die Berechnung
+! du ... [mm] Durchmesser der Bewehrung - Eingangsparameter für die Risbreitenberechnung
+! wku/wkl ... [mm] Rissweite
+! asu/as
+! Beispiel AQ 50 matte (DM5 alle 10cm in beiden Richtungen)
+para - du 10 wku 0.3 wkl 0.3 $$
+             asu 0.2*100/10 $$
+             asu2 0.2*100/10 $$
+             asl2 0.2*100/10 $$
+             asl 0.2*100/10
+! mit doppeldollar-Zeichen $$ kann einie Zeile in mehr Zeilen unterteilt werden (bessere Übersicht),
+! wird aber als eine von Programm gelesen
+
+end   
+```
+
+GZT Bemessung:
+```code
++PROG BEMESS
+HEAD 'GZT Bemessung'
+
+ECHO full extr ! komplette Ausgabe im Bericht
+
+! Steuerung das GZT (ULTI) Bemessung durchzuführen ist
+! Bewehrung wird gespeicher in den Bewehrungsspeicherlastfall 1
+CTRL ULTI RMOD SAVE  LCR 1  LCRI 0
+
+grp 10 ! Welche Gruppe der Flächenelemente zu bemessen ist
+
+! Eingabe der Lastfälle / Ergebniskombinationen
+lc (d) ! alle als GZT gespeicherten Lastfälle
+!LC (2121 2136 1) ! explizite Auswahl der LFs
+
+END  
+```
+
+GZG Bemessung:
+```code
++prog bemess
+head 'SLS Rissbreitenachweis'
+ECHO full extr ! komplette Ausgabe im Bericht
+
+! Es soll GZG Nachweis der Rissbreite geführt werden
+! Die Ergebnisse der Bemessung sind in Bewehungsspeicherlastfall 2 zu speichern
+! Ausgangs Bewehrung ist die Bewehrung aus Bewehrungspeicherlastfall 1
+! und die soll überlagert werden
+CTRL crac RMOD supe LCR 2 LCRI 1
+
+CRAC WK PARA ! Rissweite soll von vorherigen Bemess, PARA übernommen werden
+
+grp 10 ! Welche Gruppe der Flächenelemente zu bemessen ist
+
+! Eingabe der Lastfälle / Ergebniskombinationen
+lc (p) ! alle als GZG Quasi-ständig gespeicherten Lastfälle
+!LC (1421 1436 1) ! explizite Auswahl der LFs
 
 
+end   
+```
 ## Ergebnisausgabe
+
+Ergebnisse Stabelemente - hier übernehmen wir praktisch alles aus dem Einführungsbeispiel, passen nur die Lastfallnummern an:
+```code
++PROG WING urs:14
+HEAD 'Stabelemente'
+
+PAGE LANO 0                       ! Ausgabe in Deutsch
+SIZE 4 SC 100 FORM URS SPLI '1*1' ! A4 Blatt Vertikal, Maßstab 1:50, 3 Abbildungen über die Blatthöhe
+
+CTRL MEAS 2D
+
+LET#lf 1,10,11,20  ! wir definieren eine lokale Variable (bzw. Vektor mit 4 Werten), und zwar die Lastfallnummern
+
+! In Sofistik können Schleifen definiert werden, anbei eine einfache Schleife, die von dem Vektor "#lf" die Anzahl der einträge übernimmt (4, also die Schleife läuft 4x)
+! und der interne Zähler der Schleife ist die Variable "#i" mit der wir in jedem Schleifenlauf den nächsten Wert des Vektors "#lf" lesen
+! Achtung: LET ist eine lokale Variable die nur in diesem +prog WING modul gespeichert ist
+! STO wäre eine globale Variable, die über die ganze Berechnung in allen Modulen zu verfügung stehen würde.
+! Es ist sinnvoll darauf zu achten die STO nur dann zu verwenden, wenn man diese Funktion benötigt und sonst mit LET zu arbeiten.
+
+loop#i lf
+    ! Biegemoment My, Schriftgröße 0.3cm
+    LC   NO #lf(#i) ; BEAM TYPE MY UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+    ! Querkraft Vz, Schriftgröße 0.3cm
+    LC   NO #lf(#i) ; BEAM TYPE Vz UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+    ! Normalkraft N
+    LC   NO #lf(#i) ; BEAM TYPE N UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+endloop
+
+! mit einer neuen Definition SIZE, wird sichergestellt, das die folgenden Ergebnisse am neuen Blatt gedruckt werden
+SIZE 4 SC 100 FORM URS SPLI '1*1' ! A4 Blatt Vertikal, Maßstab 1:50, 3 Abbildungen über die Blatthöhe
+
+! Wir können aber natürlich auch einzeln die Ergebnisse darstellen, z.B. für GZT
+
+! Biegemomente in separaten Bildern
+! max Biegemoment My, Schriftgröße 0.3cm
+LC   NO 2129 ; BEAM TYPE MY UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+! min Biegemoment My
+LC   NO 2130 ; BEAM TYPE MY UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+
+! Oder mit der AND funktion überlagert am Blatt
+! max Biegemoment My, Schriftgröße 0.3cm
+LC   NO 2129 ; BEAM TYPE MY UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+and
+! min Biegemoment My
+LC   NO 2130 ; BEAM TYPE MY UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+
+
+HEAD 'Auflagerkräfte'
+
+PAGE LANO 0
+SIZE 4 SC 100 FORM URS SPLI '1*1'
+
+! Auflagerkraft in X Richtung global
+LC   NO 2125 ; NODE TYPE SZ UNIT DEFA SCHH 0.3 FILL NO
+and
+LC   NO 2126 ; NODE TYPE SZ UNIT DEFA SCHH 0.3 FILL NO
+
+
+HEAD 'Verschiebungen und Verdrehungen'
+
+PAGE LANO 0
+SIZE 4 SC 100 FORM URS SPLI '1*1'
+
+! Verschiebungen GZG Quas-Ständig in Z Richtung
+LC   NO 1420+17 ; NODE TYPE UZ UNIT DEFA SCHH 0.3 FILL NO
+LC   NO 1420+18 ; NODE TYPE UZ UNIT DEFA SCHH 0.3 FILL NO
+
+end     
+```
+
+Ergebnisse Bemessung Stäbe:
+```code
++prog wing
+HEAD 'Bemessung Stäbe'
+UNIT 0 SET IN
+SIZE -4 SC 75 FORM URS SPLI '3*1'
+
+COL2 C5 -2071 C25 -3017 -3017 ! Auflagerdarstellung ausgeschaltet
+
+VIEW TYPE DIRE X 0 Y -1 Z 0 AXIS POSZ ROTA 0
+! Untere Bewehrung
+LC   DESI 1 ; BEAM TYPE AS1 UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+! Obere Bewehrung
+LC   DESI 1 ; BEAM TYPE AS2 UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+! Schubbewehrung
+LC   DESI 1 ; BEAM TYPE ASU1 UNIT DEFA SCHH 0.3 STYP BEAM FILL NO REPR DLIN
+
+END  
+```
+
+Ergebnisse Flächenelemente:
+```code
++PROG WING urs:10
+HEAD 'Ergebnisse Flächenelemente'
+ctrl meas 2d ! Steuerung, dass alle Ergebnisse für 2D Darstellung angepasst werden
+
+SIZE TYPE -URS SC 100 SPLI '1*1'
+
+COL2 C5 -2071 C25 -3017 -3017 ! Auflagerdarstellung ausgeschaltet
+
+! Blick von oben (Z = 1 -> Normal zur unserer Ebene)
+VIEW TYPE DIRE X 0 Y 0 Z 1 AXIS POSY ROTA 0
+
+grp 10 ! Auswahl welche Elementgruppe dargestellt werden soll
+
+! Definition für die Schriftgröße der Ergebnisse
+let#sch 0.3
+
+! Definition für den zusätzlichen Text am Bild mit MOVE
+! Schriftgröße SCHH 0.5 cm
+!
+#define text_prop
+        move del; move 1. 92. unit pr alig left schh 0.5 cb 0 c 1001; move del;
+#enddef
+
+!*! Eigengewicht
+        #include text_prop
+        move del; text 'Plattenschnittgr./ EGW / Mxx '
+        LC   NO 1 ; QUAD TYPE MX UNIT defa SCHH #sch STYP E2N REPR DISO
+
+        #include text_prop
+        move del; text 'Plattenschnittgr./ EGW / Myy '
+        LC   NO 1 ; QUAD TYPE MY UNIT defa SCHH #sch STYP E2N REPR DISO
+
+        #include text_prop
+        move del; text 'Plattenschnittgr./ EGW / sqr(Vx^2+Vy^2) '
+        LC   NO 1 ; QUAD TYPE Vr UNIT defa SCHH #sch STYP E2N REPR DISO
+
+        #include text_prop
+        move del; text 'PLattenschnittgr./ EGW / Nx '
+        LC   NO 1 ; QUAD TYPE NX UNIT defa SCHH #sch STYP E2N REPR DISO
+
+!*! GZT
+SIZE TYPE URS SC 150 SPLI '1*2'
+        #include text_prop
+        move del; text 'Plattenschnittgr./ GZT / max Mxx '
+        LC   NO 2121 ; QUAD TYPE MX UNIT defa SCHH #sch STYP E2N REPR DISO
+        #include text_prop
+        move del; text 'Plattenschnittgr./ GZT / min Mxx '
+        LC   NO 2122 ; QUAD TYPE MX UNIT defa SCHH #sch STYP E2N REPR DISO
+
+        #include text_prop
+        move del; text 'Plattenschnittgr./ GZT / max Myy '
+        LC   NO 2123 ; QUAD TYPE MY UNIT defa SCHH #sch STYP E2N REPR DISO
+        #include text_prop
+        move del; text 'Plattenschnittgr./ GZT / min Myy '
+        LC   NO 2124 ; QUAD TYPE MY UNIT defa SCHH #sch STYP E2N REPR DISO
+
+        #include text_prop
+        move del; text 'Plattenschnittgr./ GZT / sqr(Vx^2+Vy^2) '
+        LC   NO 2127 ; QUAD TYPE Vr UNIT defa SCHH #sch STYP E2N REPR DISO
+
+!*! GZG Quasiständig
+SIZE TYPE URS SC 150 SPLI '1*2'
+        #include text_prop
+        move del; text 'Plattenschnittgr./ GZG Quasiständig / max Mxx '
+        LC   NO 1421 ; QUAD TYPE MX UNIT defa SCHH #sch STYP E2N REPR DISO
+        #include text_prop
+        move del; text 'Plattenschnittgr./ GZG Quasiständig / min Mxx '
+        LC   NO 1422 ; QUAD TYPE MX UNIT defa SCHH #sch STYP E2N REPR DISO
+
+        #include text_prop
+        move del; text 'Plattenschnittgr./ GZG Quasiständig / max Myy '
+        LC   NO 1423 ; QUAD TYPE MY UNIT defa SCHH #sch STYP E2N REPR DISO
+        #include text_prop
+        move del; text 'Plattenschnittgr./ GZG Quasiständig / min Myy '
+        LC   NO 1424 ; QUAD TYPE MY UNIT defa SCHH #sch STYP E2N REPR DISO
+
+end
+```
+
+Ergebnisse Bemessung Flächenelemente:
+```code
++PROG WING
+HEAD 'Bewehrung Flächenelemente'
+
+ctrl meas 2d ! Steuerung, dass alle Ergebnisse für 2D Darstellung angepasst werden
+
+SIZE TYPE -URS SC 100 SPLI '1*1'
+
+COL2 C5 -2071 C25 -3017 -3017 ! Auflagerdarstellung ausgeschaltet
+
+! Blick von oben (Z = 1 -> Normal zur unserer Ebene)
+VIEW TYPE DIRE X 0 Y 0 Z 1 AXIS POSY ROTA 0
+
+grp 10 ! Auswahl welche Elementgruppe dargestellt werden soll
+
+! Untere (Lower - L) Längsbewehrung
+LC DESI 2 ; QUAD TYPE ASLH UNIT DEFA SCHH 0.3 STYP E2N FILL NO REPR DISO AVER NO
+
+! Untere Querbewehrung
+LC DESI 2 ; QUAD TYPE ASLQ UNIT DEFA SCHH 0.3 STYP E2N FILL NO REPR DISO AVER NO
+
+! Obere (Upper - U) Längsbewehrung
+LC DESI 2 ; QUAD TYPE ASUH UNIT DEFA SCHH 0.3 STYP E2N FILL NO REPR DISO AVER NO
+
+! Obere Querbewehrung
+LC DESI 2 ; QUAD TYPE ASUQ UNIT DEFA SCHH 0.3 STYP E2N FILL NO REPR DISO AVER NO
+
+! Rissbreite unten
+LC DESI 2 ; QUAD TYPE WKLM UNIT DEFA SCHH 0.3 STYP E2N FILL NO REPR DISO AVER NO
+
+! mit semi-colon ; können mehrere Zeilen in einer Zeile geschrieben werden
+END
+           
+```
+
