@@ -178,10 +178,10 @@ sln 14 22  2
 
 $----------------------------------------------------------------------------------
 !*! Flächendefinition
-sar 1 grp 10 mno 1 mrf 101 t 0.28[m] mctl regm qref belo titl 'Decke'
+sar 1 grp 10 mno 1 mrf 101 t 0.28[m] mctl regm qref cent titl 'Decke'
 sarb out nl 1,2,3,4
 
-sar 2 grp 10 mno 1 mrf 101 t 0.28[m] mctl regm qref belo titl 'Decke'
+sar 2 grp 10 mno 1 mrf 101 t 0.28[m] mctl regm qref cent titl 'Decke'
 sarb out na  1 ne  2
 sarb out na  2 ne 22
 sarb out na 22 ne 21
