@@ -5,8 +5,8 @@ Knotenlasten oder auch Linienlasten die unter einem Winkel zu den X/Y/Z Achsen s
 lc 2 type Q titl 'Punktlast'
 ! mit let wird eine lokale (nur in dem +prog xyz aktiv) Variable definiert
 let#spt 24   !Strukturpunktnummer angeben
-let#ang 20   ![°] Angabe der Winkels in grad
-let#p   1000 ![kN9 Angabe Lastgröße
+let#ang 20   ![°] Angabe des Winkels in grad
+let#p   1000 ![kN] Angabe Lastgröße
 ! horizontale komponente der Kraft
 node #spt type pxx p1 cos(#ang)*#p
 ! vertikale komponente der Kraft
