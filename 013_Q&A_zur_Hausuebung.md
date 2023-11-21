@@ -1,12 +1,19 @@
-## Last unter einem Winkel
+[Last unter einem Winkel?](#last-unter-einem-winkel)
+
+[Beispiel: Bogen u. nutzen von Schleifen](#beispiel:-bogen-u.-nutzen-von-schleifen)
+
+[Fehlerquelle Maxima](#fehlerquelle-maxima)
+
+
+# Last unter einem Winkel
 Knotenlasten oder auch Linienlasten die unter einem Winkel zu den X/Y/Z Achsen stehen, können wie folgend eingegeben werden (pro Komponente):
 ```code
 ! Knotenlast in X-Y Ebene
 lc 2 type Q titl 'Punktlast'
 ! mit let wird eine lokale (nur in dem +prog xyz aktiv) Variable definiert
 let#spt 24   !Strukturpunktnummer angeben
-let#ang 20   ![°] Angabe des Winkels in grad
-let#p   1000 ![kN] Angabe Lastgröße
+let#ang 20   ![°] Angabe der Winkels in grad
+let#p   1000 ![kN9 Angabe Lastgröße
 ! horizontale komponente der Kraft
 node #spt type pxx p1 cos(#ang)*#p
 ! vertikale komponente der Kraft
@@ -15,7 +22,7 @@ node #spt type pyy p1 sin(#ang)*#p
 
 ![Knotenlast_winkel.png](/docs/assets/images/Knotenlast_winkel.png)
 
-## Beispiel: Bogen u. nutzen von Schleifen
+# Beispiel: Bogen u. nutzen von Schleifen
 
 ![[013_Fachwerk.png]]
 Anbei ein Beispiel eines Fachwerkträgers dessen Obergurt einem Bogen folgt und das Modell mit Verwendung von Schleifen (loops) erzeugt wird um sich die Arbeit zu erleichtern:
@@ -106,3 +113,76 @@ end
 
 Das komplette Beispiel kann  [hier](https://aiztok.github.io/SBB/docs/013_Beispiel_Q&A_HUE.dat) heruntergeladen werden.
 
+
+# Fehlerquelle Maxima
+Die folgende Warnung bedeutet, dass für die gewählten Einwirkungen (`ACT`) keine zugeordneten Lastfälle gefunden wurden:
+![013_Warnung_Maxima.png](/docs/assets/images/013_Warnung_Maxima.png)
+
+Z.B. in Maxima wird das Programm aufgefordert eine Kombination anhand der gewählten Einwirkungen zu erstellen:
+```code
++prog maxima
+head 'Ergebniskombination'
+! Output control
+echo chck val full
+
+COMB 1 rare BASE - $ kombination charakteristisch
+    ACT G_1 ! EGW
+    ACT G_2 ! Ständige Lasten
+    ACT Q ! Nutzlast
+    ACT S ! Schnee  
+
+end
+```
+
+Aber in `Sofiload` fehlt die Zuweisung der Last (z.B. LC2) zu einer Einwirkung
+
+```code
+1 +prog sofiload
+2 head 'Definition der Lasten'
+3 !*!Label Ständige
+4 lc 2 titl 'Ausbaulasten'
+5    ! Flächenlast kann über Bezug auf Gruppennummer definiert werden
+6    quad grp 10 type pg p 2.5
+7 end
+```
+
+Für den Beispiel wäre die 4. Zeile im oberen Codeblock wie folgend zu korrigieren:
+```
+4 lc 2 type G_2 titl 'Ausbaulasten'
+```
+
+Alternativ könnte auch wie folgend vorgegangen werden:
+- im Sofiload werden die Lasten keiner Einwirkung zugewiesen (hier sollte dann `type none` stehen)
+```code
+4 lc 2 type none titl 'Ausbaulasten'
+```
+- in Maxima werden explizit die Lastfälle der Einwirkung zugewiesen (beispielhaft für G_2, LC2 dargestellt):
+```code
++prog maxima
+head 'Ergebniskombination'
+! Output control
+echo chck val full
+
+COMB 1 rare BASE - $ kombination charakteristisch
+    ACT G_1 ! EGW
+    ACT G_2 ! Ständige Lasten
+	    LC 2 ! explizit der Einwirkung zugewiesen Lastfall
+    ACT Q ! Nutzlast
+    ACT S ! Schnee  
+
+end
+```
+# Graphische Darstellung der Ergebnisse
+
+Die folgenden graphische Darstellung zeige wie:
+- im Graphix die Schnittgrößen für die erstellen Einwirkungskombinationen dargestellt werden
+
+![013_Grafix_Fores.gif](/docs/assets/images/013_Grafix_Forces.gif)
+
+- im Graphix die Auflagerreaktionen dargestellt werden
+
+![013_Grafix_Reactions.gif](/docs/assets/images/013_Grafix_Reactions.gif)
+
+- diese Ergebnisse in Text Forma umgewandelt werden und im Report browser dargestellt werden 
+
+![013_Grafix_Report.gif](/docs/assets/images/013_Grafix_Report.gif)
