@@ -573,15 +573,16 @@ Alternativ können aber die Daten auch über den Code im `RESULTS` Modul automat
 Im folgenden werden die Schnittgrößen (maximale Drucknormalkraft und dazugehöriges Biegemoment) in das [hier zur Verfügung gestelltes Excel](https://aiztok.github.io/SBB/docs/CONC_Knicken_stahlbetonstuetze.xlsx) zur Ermittlung der Schlankheit / Grenzschlankheit und des Biegemomentes unter Theorie 2. Ordnung gem. EN 1992-1-1, Kap. 5.8, exportiert. Dafür muss das xlsx im gleichen Ordner wie die Sofistik Datei abgelegt sein.
 Der Code unten erzeugt neue bzw. überschreibt existierende Worksheets in der Exceldatei.
 
-```
-+prog results urs:18
+Exportieren von Biegemoment My,Ed und Normalkraft NEd ins Excel:
+```code
++prog results
 head 'Export ins xlsx Format'
 
 ! ein Doppeltes Dollar $$ ist ein umbruch, die Zeilen werden von der Software
 ! gelesen als ob es die gleiche Zeile wäre - praktisch bei langen Eingaben um es
 ! trotzdem auf dem Bildschirm zu sehen, ohne das Fenster zu verschieben
-xlsx "CONC_Knicken_stahlbetonstuetze.xlsx" WS "SOFi_Erg" $$
-ROW 2 COL 1
+xlsx "CONC_Knicken_stahlbetonstuetze.xlsx" WS "SOFi_Erg_GZT" $$
+ROW 1 COL 1
 
 ! Export der maximalen Druckkraft in der Wand und des dazugehörigen Biegemoments
 grp 1 ! nur die Wandelemente
@@ -595,18 +596,32 @@ AND
 TXTP SHOW SIGN OVLP AMAX EXTR  YES
 BEAM TYPE   MY STYP BEAM REPR DLST
 ! Biegemomente MEd von Stäben
-AND
+
+end     
+```
+
+Exportieren von My,Ek unter GZG Quasi-ständige Einwirkungskombination:
+```code
++prog results
+head 'Export ins xlsx Format'
+
+xlsx "CONC_Knicken_stahlbetonstuetze.xlsx" WS "SOFi_Erg_GZG" $$
+ROW 1 COL 1
+
 LC   NO 1420+9 ! Auch Quasi-Ständig My wird benötigt
 TXTP SHOW SIGN OVLP AMAX EXTR  YES
 BEAM TYPE   MY STYP BEAM REPR DLST
 
-end
+end  
+```
 
+Exportieren der Querschnittsfläche und Trägheitsmoments:
+```code
 +prog results urs:15
 head 'Querschnittswerte'
 
 xlsx "CONC_Knicken_stahlbetonstuetze.xlsx" WS "SOFi_QS" $$
-ROW 2 COL 1
+ROW 1 COL 1
 
 LC   SECT 1 ! Auswahl Querschnittsnummer
 $ Nummer des Querschnitts
@@ -621,8 +636,9 @@ AND
 TXTP SHOW SIGN OVLP AMAX EXTR  YES
 STRU TYPE   IY ETYP SECT REPR DLST
 
-END 
+END      
 ```
+
 
 ## Extra
 **Erzeugte Einwirkungskombinationen nachvollziehen**
