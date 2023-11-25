@@ -4,6 +4,7 @@
 
 [Fehlerquelle Maxima](#fehlerquelle-maxima)
 
+[Graphische Darstellung der Ergebnisse](#graphische-darstellung-der-ergebnisse)
 
 # Last unter einem Winkel
 Knotenlasten oder auch Linienlasten die unter einem Winkel zu den X/Y/Z Achsen stehen, können wie folgend eingegeben werden (pro Komponente):
@@ -174,15 +175,30 @@ end
 ```
 # Graphische Darstellung der Ergebnisse
 
-Die folgenden graphische Darstellung zeige wie:
-- im Graphix die Schnittgrößen für die erstellen Einwirkungskombinationen dargestellt werden
+In den Beispielen wurde die graphische Ausgabe im `REPORT BROWSER` mittels `+prog WING` bereits in einem sauberen Code dargestellt. Dieser Code kann natürlich weiter an anderen Beispielen (mit ggf. geringeren Anpassungen) angewendet werden.
+Im Folgenden wird aber gezeigt, wie man die Bilder über das Programm `GRAPHICS` erstellen kann und dann in einen Code umformen kann.
+
+Die Vorgehensweise ist wie im unteren GIF dargestellt:
+- öffnen des Programms `Graphics`
+- Auswahl welche Ergebnisse dargestellt werden sollen (1. Reiter)
+- Auswahl des Lastfalls (2.Reiter)
+- nicht im GIF dargestellt: im 3.Reiter kann die Art der Darstellung gewählt werden
+- nicht im GIF dargestellt: im 4.Reiter können mehrere Graphiken/Blätter/Bilder erstellt werden
+
+Beispiel wie im Graphic die Schnittgrößen für die erstellen Einwirkungskombinationen dargestellt werden:
 
 ![013_Grafix_Fores.gif](/docs/assets/images/013_Grafix_Forces.gif)
 
-- im Graphix die Auflagerreaktionen dargestellt werden
+Beispiel im Graphic die Auflagerreaktionen dargestellt werden:
 
 ![013_Grafix_Reactions.gif](/docs/assets/images/013_Grafix_Reactions.gif)
 
-- diese Ergebnisse in Text Forma umgewandelt werden und im Report browser dargestellt werden 
+Um die gewählten Ergebnisse in ein Code zu transformieren wir wie folgend vorgegangen:
+- Rechtklick auf das Bild
+- Auswahl "Kopieren ins Clipboard" / z.B. "Aktuelles Bild"
+- Im SSD ein Text-Eingabe Task auswählen und mit *Steu+V* den Text einkopieren
+- Im GIF wird noch mittels *Steu+Q+T* der Code ins Englische geändert (kann auch Deutsch bleiben)
+- Berechnen des Tasks
+- Anzeigen im `Report Browser`
 
 ![013_Grafix_Report.gif](/docs/assets/images/013_Grafix_Report.gif)
