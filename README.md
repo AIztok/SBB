@@ -18,6 +18,8 @@ Inhalt:
 
 [022. 2. Hausübung](https://aiztok.github.io/SBB/022_Hausuebung.html)
 
+[023. Q&A zur Hausübung](https://aiztok.github.io/SBB/023_Q&A_zur_Hausuebung.html)
+
 [031. 3. Übung](https://aiztok.github.io/SBB/031_Uebung.html)
 
 [100. SOFiChatBot](https://aiztok.github.io/SBB/100_SOFiChatBot.html)
