@@ -22,6 +22,10 @@ Inhalt:
 
 [031. 3. Übung](https://aiztok.github.io/SBB/031_Uebung.html)
 
+[032. 3. Hausübung](https://aiztok.github.io/SBB/032_Hausuebung.html)
+
+[033. Q&A zur Hausübung](https://aiztok.github.io/SBB/033_Q&A_zur_Hausuebung.html)
+
 [100. SOFiChatBot](https://aiztok.github.io/SBB/100_SOFiChatBot.html)
 
 [101. Weitere Links](https://aiztok.github.io/SBB/101_Weitere_Links.html)
