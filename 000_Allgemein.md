@@ -22,10 +22,10 @@ verwendet.
 
 ## SOFiSTiK Nutzliche Tipps
 
-F1 - öffnet das Handbuch
-F8 - kopiert die Zeile
-Steu+Q+T - übersetzen von englischen in den deutschen Code oder vice-versa
-Alt+C - kommentieren oder unkommentieren von selektierten Textblock
+- F1 - öffnet das Handbuch
+- F8 - kopiert die Zeile
+- Steu+Q+T - übersetzen von englischen in den deutschen Code oder vice-versa
+- Alt+C - kommentieren oder unkommentieren von selektierten Textblock
 
 Wenn sich in die Datenbank Fehler einschleichen, ist manchmal erforderlich die Datenbank und andere Dateien zu bereinigen und es erneut zu berechnen:
 ![000_Delete_Database.gif](/docs/assets/images/000_Delete_Database.gif)
