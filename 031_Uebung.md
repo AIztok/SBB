@@ -499,10 +499,10 @@ In den ersten zwei Reihen wird die Schubbewehrung um 60% erhöht.
 Im Durchstanzbereich sind mindestens        9.69 [cm2/m]
 als Biegebewehrung einzulegen.
 ```
-![[031_Bemess_Durchstanzen.png]]
+![031_Bemess_Durchstanzen.png](/docs/assets/images/031_Bemess_Durchstanzen.png)
 
 Das Ergebnis der Bemessung ist auch in `GRAPHICS` graphisch/textlich dargestellt:
-![[031_Graphics_Durchstanzen.png]]
+![031_Graphics_Durchstanzen.png](/docs/assets/images/031_Graphics_Durchstanzen.png)
 
 GZG Bemessung:
 ```code
