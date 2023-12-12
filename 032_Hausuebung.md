@@ -20,6 +20,9 @@ a = 5 + (9 / (6+Y))
 Höhe h:
 ```math
 Y = gerade Zahl -> h = 4,0m
+```
+
+```math
 Y = ungerade Zahl -> h = 5,0m 
 ```
 
