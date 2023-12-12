@@ -20,6 +20,8 @@ Inhalt:
 
 [023. Q&A zur Hausübung](https://aiztok.github.io/SBB/023_Q&A_zur_Hausuebung.html)
 
+[030. 3. Übung - Slides](https://aiztok.github.io/SBB/slides_3/index.html)
+
 [031. 3. Übung](https://aiztok.github.io/SBB/031_Uebung.html)
 
 [032. 3. Hausübung](https://aiztok.github.io/SBB/032_Hausuebung.html)
