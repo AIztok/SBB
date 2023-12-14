@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>reveal-md</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./dist/reset.css" />
+    <link rel="stylesheet" href="./dist/reveal.css" />
+    <link rel="stylesheet" href="./dist/theme/black.css" id="theme" />
+    <link rel="stylesheet" href="./css/highlight/base16/zenburn.css" />
+
+
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><style>
+#bottom-left {
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    text-align: left;
+}
+#bottom-right {
+    bottom: 1;
+    left: 0;
+    position: fixed;
+    right: 0;
+    text-align: right;
+}
+</style>
+
+# Übung Stahlbetonbau
+
+> Software unterstützte Bemessung von Tragwerken
+
+<div id="bottom-right">
+Iztok Arnuga
+</div>
+</script></section><section ><section data-markdown><script type="text/template">
+
+## Ablauf 3. Übungseinheit
+</script></section><section data-markdown><script type="text/template">
+- 1:15 Block 1 (Erläuterung Graphics + ONR24005 + Start Übung)
+- 10 min Pause <!-- .element: class="fragment" data-fragment-index="1" -->
+- 1:10 Block 2 (Übung) <!-- .element: class="fragment" data-fragment-index="2" -->
+- 10 min Pause <!-- .element: class="fragment" data-fragment-index="3" -->
+- 1:00 Block 3 (Übung + Hausübung + Abschluss) <!-- .element: class="fragment" data-fragment-index="4" -->
+
+</script></section></section><section ><section data-markdown><script type="text/template">
+## Sofistik Graphics
+
+Erläuterung ergänzt auch online:
+
+<iframe title="3.Übung" frameborder="0" width="100%" height="600pt" src="https://aiztok.github.io/SBB/023_Q&A_zur_Hausuebung.html"></iframe>
+</script></section><section data-markdown><script type="text/template">
+Weitere Video zu Graphics
+
+[Graphics Grundlagen - YouTube](https://www.youtube.com/watch?v=bewjVk5-mWM)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/bewjVk5-mWM?si=vsXPVYRBzkDYcTtB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+</script></section><section data-markdown><script type="text/template">[Graphics Ausgabegrafiken - YouTube](https://www.youtube.com/watch?v=OVfCLEx6HrE)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OVfCLEx6HrE?si=o2qRO25k7j6q_FFG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</script></section><section data-markdown><script type="text/template">
+[Ansichten und Auswahlen in Graphics - YouTube](https://www.youtube.com/watch?v=vm01opS92lE)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/vm01opS92lE?si=qpomEhD0E22UI53m" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></script></section></section><section ><section data-markdown><script type="text/template">
+## ONR 24005
+
+Statische Berechnungen - Dokumentation und Anforderungen an den Inhalt, den Umfang und die Form
+</script></section><section data-markdown><script type="text/template">
+Die ONR ist nur zur Studienzwecken auf Moodle erreichbar:
+<iframe title="ONR24005" frameborder="0" width="100%" height="600pt" src="https://moodle.fh-campuswien.ac.at/pluginfile.php/1388302/mod_folder/content/0/Statische%20Berechnungen_Dokumentation_Umfang_Inhalt.pdf"></iframe>
+</script></section><section data-markdown><script type="text/template">
+Hilfreich sind auch die Erläuterungen der ZT-Kammer:
+<iframe title="WBO" frameborder="0" width="100%" height="600pt" src="https://wien.arching.at/fileadmin/user_upload/redakteure_wnb/D_Service/D_1_1_Baurecht/Richtlinien/Erlaeuterung_Inhalt_statisch._Berechn._gem._BO_Wien_i.d.F._30.06.2016.pdf"></iframe>
+</script></section><section data-markdown><script type="text/template">
+## Grundzüge einer prüffähigen "Statik"
+</script></section><section data-markdown><script type="text/template">## Die Einführung <br/>
+
+Deck- bzw. Titelblatt <!-- .element: class="fragment fade-in-then-semi-out" --> 
+
+Inhaltsverzeichnis   <!-- .element: class="fragment fade-in-then-semi-out" --> 
+
+Ziel der Untersuchung   <!-- .element: class="fragment fade-in-then-semi-out" --> 
+
+Verwendete Unterlagen   <!-- .element: class="fragment fade-in-then-semi-out" --> 
+</script></section><section data-markdown><script type="text/template">
+## Die Aufgabe <br/>
+
+Systembeschreibung   <!-- .element: class="fragment fade-in-then-semi-out" --> 
+
+Verwendete Baustoffe und Kennwerte   <!-- .element: class="fragment fade-in-then-semi-out" --> 
+
+Einwirkungen   <!-- .element: class="fragment fade-in-then-semi-out" --> 
+
+Bau- und Montagezustände   <!-- .element: class="fragment fade-in-then-semi-out" --> 
+</script></section><section data-markdown><script type="text/template">
+## Das Produkt <br/>
+
+Ergebnisse   <!-- .element: class="fragment fade-in-then-semi-out" --> 
+
+(Bewehrungs-) Detailskizzen  <!-- .element: class="fragment fade-in-then-semi-out" --> 
+
+Zusammenfassung   <!-- .element: class="fragment fade-in-then-semi-out" --> 
+
+Anhänge (z.B. detailierte ausgaben)   <!-- .element: class="fragment fade-in-then-semi-out" --> 
+</script></section></section><section ><section data-markdown><script type="text/template">
+## Übung: Keller
+
+![031_Keller_3D.png](031_Keller_3D.png) <!-- .element height="70%" width="70%" -->
+</script></section><section data-markdown><script type="text/template">
+Grundriss: <br/>
+![031_Keller_Grundriss.png](031_Keller_Grundriss.png) <!-- .element height="70%" width="70%" -->
+</script></section><section data-markdown><script type="text/template">
+## Erstellung des Berechnungsmodels <br/>
+
+<iframe title="3.Übung" frameborder="0" width="100%" height="600pt" src="https://aiztok.github.io/SBB/031_Uebung.html"></iframe>
+</script></section></section><section  data-markdown><script type="text/template">
+## 3. Hausaufgabe:
+
+Anweisung auf der Internetseite, Abgabe via Moodle
+
+<iframe title="SBB" frameborder="0" width="100%" height="500pt" src="https://aiztok.github.io/SBB/032_Hausuebung.html"></iframe>
+</script></section><section  data-markdown><script type="text/template">
+Alle Unterlagen der LVA können über [Github](https://github.com/AIztok/SBB) einfach lokal abgespeichert werden:
+
+![Github_dl_zip.png](Github_dl_zip.png) <!-- .element height="80%" width="80%" -->
+</script></section><section  data-markdown><script type="text/template">
+## [Menti.com](https://www.menti.com) Abfrage
+
+<iframe title="Menti-1" frameborder="0" width="100%" height="550pt" src="https://www.mentimeter.com/app/presentation/alr5eya7grao33o8g9r1f5ivppbcmikt/ez6nzqr773uq/edit"></iframe>
+</script></section><section  data-markdown><script type="text/template">
+Danke, bei Fragen einfach melden, schöne Feiertage!</script></section></div>
+    </div>
+
+    <script src="./dist/reveal.js"></script>
+
+    <script src="./plugin/markdown/markdown.js"></script>
+    <script src="./plugin/highlight/highlight.js"></script>
+    <script src="./plugin/zoom/zoom.js"></script>
+    <script src="./plugin/notes/notes.js"></script>
+    <script src="./plugin/math/math.js"></script>
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        slideNumber: true,
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath
+        ]
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"theme":"black","transition":"slide","controls":true,"progress":true,"slideNumber":false}, queryOptions);
+    </script>
+
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+</html>
