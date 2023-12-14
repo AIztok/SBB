@@ -84,7 +84,8 @@ Folgende Einwirkungen sind zu berücksichtigen:
 
 - Schneelast (Feldweise ansetzten)
 - Windlast (beide Richtungen)
-# Bewehrungsskizze
+- 
+## Bewehrungsskizze
 
 Bewehrungsskizzen können per Hand oder auch mit der EDV erstellt werden. Es soll nachvollziehbar sein, welche Bewehrung wird anhand der Bemessungsergebnisse vorgesehen und sollte in der Praxis die Grundlage für den Bewehrungskonstrukteur bilden. 
 
