@@ -145,11 +145,11 @@ $-------------------------------------------------------------------------------
 !
 spt no     x     y  z  nref ref=pt sx=1 sy=0 sz=0
 ! Fundamentplatte
-#include _knoten_fundamentpl.dat
+#include knoten_fundamentpl.dat
 ! Wände
-#include _knoten_waende.dat
+#include knoten_waende.dat
 ! Stütze
-#include _knoten_stuetze.dat
+#include knoten_stuetze.dat
 
 $----------------------------------------------------------------------------------
 !*!Label Flächen
