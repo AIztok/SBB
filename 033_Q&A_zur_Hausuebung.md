@@ -1,7 +1,8 @@
+# 033 Q&A zur Hausübung
 Inhalt:
 [Definition von Windlasten](#definition-von-Windlasten)
 
-# Definition von Windlasten
+## Definition von Windlasten
 Die Windlasten können mit verschiedenen Ansätzen auf das Modell aufgebracht werden:
 - Software interne Ermittlung der Windlast und Definition der Außendruckbeiwerte
 - "Händische" Eingabe mit expliziter Definition der Flächenlasten
@@ -9,7 +10,7 @@ Die Windlasten können mit verschiedenen Ansätzen auf das Modell aufgebracht we
 Die .sofistik Datei des Beispiels kann [hier](https://aiztok.github.io/SBB/docs/FH_SBB_SSD-Beispiel_Windlasten.sofistik) heruntergeladen werden.
 ![033_Lastbild.png](/docs/assets/images/033_Lastbild.png)
 
-## Programminterne Windlasten
+### Programminterne Windlasten
 Die Windlasten können seitens der Software anhand von Eingaben der Geländekategorie, Höhe, Basisgeschwindigkeit inkl. der Bereiche ermittelt werden:
 ```code
 +prog sofiload
@@ -38,7 +39,21 @@ LC 112 TITL 'WIND +Y' TYPE W
     COPY NO 100 FACT +1.0 TYPE WIND
 ```
 
-## Händische Eingabe
+Wesentlich für die korrekte Windlastdefinition ist, dass die Richtung der lokalen Achsen der Flächen stimmt. Z.B. es müssen alle in dass innere des Gebäudes zeigen. Anbei ein Grundriss im `Graphics` wo man die Richtung sieht/prüft:
+
+![033_Richtung_Z.png](/docs/assets/images/033_Richtung_Z.png)
+
+In dem Beispiel wird die Richtung der erzeugten Flächen wie folgend in `SOFIMSHC` modifiziert (mit dem minus "-" vor der Strukturfläche wird angedeutet, dass wir diese existierende Fläche nur anpassen):
+
+```code
+! Ändern der Richtung des lokalen Koordinaten Systems, Z-Richtung ins innere des Gebäudes
+sar -10 nx -1 0 0
+sar -11 nx  0 1 0
+sar -13 nx  0 -1 0 
+
+```
+
+### Händische Eingabe
 Die Flächenlasten können auch explizit nach den Bereichen gem. EN 1991-1-4 definiert werden, anbei das Beispiel für die Richtung +X:
 
 ```code
