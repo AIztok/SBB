@@ -53,6 +53,34 @@ sar -13 nx  0 -1 0
 
 ```
 
+Für den Fall, dass die einzelnen Wände / Decke aus mehreren Strukturflächen erstellt wurden wie unten dargestellt:
+![033_SAR.png](/docs/assets/images/033_SAR.png)
+
+dann funktioniert die Eingabe über die `SAR` nicht mehr, sondern muss Bezug auf die Eckstrukturpunkte geschaffen werden: 
+
+```code
++prog sofiload
+head 'Windlasten'
+
+!*!Label Windlasten gem. Sofistik
+! Erstens werden die Flächen auf die die Windlasten wirken definiert
+! Es wird dabei auf die Flächennummern Bezug genommen
+LC 100 TITL 'DEF. DER FLÄCHEN' TYPE NONE
+    AREA QGRP TYPE WIND X1 SPT 111 X2 SPT 121 X3 SPT 221 X4 SPT 211 P1 1.0 TITL 'Vorne'
+    AREA QGRP TYPE WIND X1 SPT 111 X2 SPT 121 X3 SPT 124 X4 SPT 114 P1 1.0 TITL 'Linke Seite'
+    AREA QGRP TYPE WIND X1 SPT 211 X2 SPT 221 X3 SPT 224 X4 SPT 214 P1 1.0 TITL 'Rechte Seite'
+    AREA QGRP TYPE WIND X1 SPT 114 X2 SPT 124 X3 SPT 224 X4 SPT 214 P1 1.0 TITL 'Hinten'
+    AREA QGRP TYPE WIND X1 SPT 121 X2 SPT 124 X3 SPT 224 X4 SPT 221 P1 1.0 TITL 'Dach'
+
+
+....restlicher code unverändert.....
+
+```
+
+![033_Knoten.png](/docs/assets/images/033_Knoten.png)
+
+Am Ende immer überprüfen ob das Lastbild Sinn ergibt und der Norm entspricht.
+
 ### Händische Eingabe
 Die Flächenlasten können auch explizit nach den Bereichen gem. EN 1991-1-4 definiert werden, anbei das Beispiel für die Richtung +X:
 
