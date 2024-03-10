@@ -3,7 +3,11 @@ Das Einführungsbeispiel ist ein einfacher Halbrahmen mit einer Wand und einer D
 
 ![Skizze_Halbrahmen.png](/docs/assets/images/Skizze_Halbrahmen.png)
 
+Diese Übung soll als Einstieg in die Modellierung und Berechnung von 2D Rahmenbauwerken dienen mittels SOFiSTiK.
 Der komplette Code kann im .dat Format [hier](https://aiztok.github.io/SBB/docs/FH_SBB_Einfuehrungsbeispiel_v01.dat) runtergeladen werden.
+
+<iframe src="https://speckle.xyz/embed?stream=b7c06225b0&commit=8c5a0622e2" width="600" height="400" frameborder="0"></iframe>
+
 ## Inhalt
 [Was passiert im Hintergrund?](#was-passiert-im-hintergrund)
 
