@@ -38,11 +38,11 @@ Abzugebende Unterlagen:
 [Valtschielbrücke in der Schweiz von Robert Maillart](https://de.wikipedia.org/wiki/Valtschielbr%C3%BCcke)
 Bildaufnahme, Längsschnitt und Querschnitt entnommen aus [D. Proske, Kleiner Brückenführer Schweiz](https://link.springer.com/book/10.1007/978-3-658-32229-8)
 
-![Valtschielbruecke_Bild.png](/docs/assets/images/Valtschielbruecke_Bild.png)
+<!-- ![Valtschielbruecke_Bild.png](/docs/assets/images/Valtschielbruecke_Bild.png) -->
 
-![Valtschielbruecke_LS.png](/docs/assets/images/Valtschielbruecke_LS.png)
+ <!-- ![Valtschielbruecke_LS.png](/docs/assets/images/Valtschielbruecke_LS.png) -->
 
-![Valtschielbruecke_QS.png](/docs/assets/images/Valtschielbruecke_QS.png)
+ <!-- ![Valtschielbruecke_QS.png](/docs/assets/images/Valtschielbruecke_QS.png) -->
 
 Aufgabe:
 - Erstellen eines 2D Modells zur Ermittlung der Schnittgrößen und Verformungen
@@ -63,7 +63,7 @@ Folgende Einwirkungen sind zu berücksichtigen:
 Die Wartungshalle V, Stahlbetonstützen und Dach als Spannbeton
 Bilder entnommen aus [Structurae](https://structurae.net/de/bauwerke/lufthansa-wartungshalle-v?r=/bauwerke/lufthansa-wartungshalle-v)
 
-![Hanger_V_Bild.png](/docs/assets/images/Hanger_V_Bild.png)
+ <!-- ![Hanger_V_Bild.png](/docs/assets/images/Hanger_V_Bild.png)  -->
 
 Systembild der Stütze, teilweise entnommen von [ETH eQuilibrium](https://www.block.arch.ethz.ch/eq/drawing)
 ![Hanger_V_System.png](/docs/assets/images/Hanger_V_System.png)
@@ -110,7 +110,7 @@ N_q = 10 kN/m * (150m)^2/(8*15m) =  1875kN
 
 Stahlbetonfachwerkbrücke, Bilder entnommen aus [Structurae](https://structurae.net/de/bauwerke/pont-la-fayette).
 
-![La_Fayette_Bild.png](/docs/assets/images/La_Fayette_Bild.png)
+ <!-- ![La_Fayette_Bild.png](/docs/assets/images/La_Fayette_Bild.png)  -->
 
 Hauptabmessungen:
 - Fachwerkhöhe: 10,4m
