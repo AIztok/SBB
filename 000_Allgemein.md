@@ -39,3 +39,4 @@ Ein paar allgemeine Informationen:
 
 
 Die Slides wurden mit [Reveal.js](https://revealjs.com/) und [Reveal-md](https://github.com/webpro/reveal-md) erstellt.
+Die 3D Modelle zur Visualisierung sind IFC Exports (Coordination View) aus SOFiSTiK und visualisiert mithilfe von [3dviewer.net](https://3dviewer.net).
