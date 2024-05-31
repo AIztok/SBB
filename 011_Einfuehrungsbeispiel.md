@@ -4,9 +4,13 @@ Das Einführungsbeispiel ist ein einfacher Halbrahmen mit einer Wand und einer D
 ![Skizze_Halbrahmen.png](/docs/assets/images/Skizze_Halbrahmen.png)
 
 Diese Übung soll als Einstieg in die Modellierung und Berechnung von 2D Rahmenbauwerken dienen mittels SOFiSTiK.
-Der komplette Code kann im .dat Format [hier](https://aiztok.github.io/SBB/docs/FH_SBB_Einfuehrungsbeispiel_v01.dat) runtergeladen werden.
 
-<iframe src="https://speckle.xyz/embed?stream=b7c06225b0&commit=8c5a0622e2" width="600" height="400" frameborder="0"></iframe>
+Der komplette SOFiSTIK Code der unten Abschnittsweise gegeben ist, kann komplett im .dat Format
+[hier](https://aiztok.github.io/SBB/docs/FH_SBB_Einfuehrungsbeispiel_v01.dat) 
+heruntergeladen werden.
+
+<iframe width="640" height="480" style="border:1px solid #eeeeee;" src="https://3dviewer.net/embed.html#model=https://raw.githubusercontent.com/AIztok/SBB/main/docs/FH_SBB_Einfuehrungsbeispiel.ifc$camera=-1.97859,-4.14302,-6.48807,2.81250,-0.60000,0.50000,0.00000,-1.00000,0.00000,45.00000$projectionmode=perspective$envsettings=fishermans_bastion,off$backgroundcolor=42,43,46,255$defaultcolor=200,200,200$defaultlinecolor=100,100,100$edgesettings=off,0,0,0,1"></iframe>
+
 
 ## Inhalt
 [Was passiert im Hintergrund?](#was-passiert-im-hintergrund)
