@@ -22,7 +22,11 @@ Grundriss des Kellers mit den Hauptabmessungen:
 
 ![031_Keller_Grundriss.png](/docs/assets/images/031_Keller_Grundriss.png)
 
-Der komplette SOFiSTIK Code der unten Abschnittsweise gegeben ist, kann komplett im .dat Format [hier](https://aiztok.github.io/SBB/docs/FH_SBB_Keller_v01.dat) heruntergeladen werden.
+<iframe width="640" height="480" style="border:1px solid #eeeeee;" src="https://3dviewer.net/embed.html#model=https://raw.githubusercontent.com/AIztok/SBB/main/docs/FH_SBB_Keller_v01.ifc$camera=-17.01361,10.35751,12.86238,-4.51050,1.57500,2.39519,0.00000,1.00000,0.00000,45.00000$projectionmode=perspective$envsettings=fishermans_bastion,off$backgroundcolor=42,43,46,255$defaultcolor=200,200,200$defaultlinecolor=100,100,100$edgesettings=off,0,0,0,1"></iframe>
+
+Der komplette SOFiSTIK Code der unten Abschnittsweise gegeben ist, kann komplett im .dat Format
+[hier](https://aiztok.github.io/SBB/docs/FH_SBB_Keller_v01.dat) 
+heruntergeladen werden.
 
 ## Inhalt
 [Erstellen des Projekts](#erstellen-des-projekts)
