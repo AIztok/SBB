@@ -75,7 +75,7 @@ Es wird bei den Übungen mit Texteingabe gearbeitet (also im Teddy bzw. in der C
 Es ist sinnvoll und hilfreich am Anfang wie ein Log / readme zu erstellen, wo die wesentlichen Informationen zum Projekt geschrieben sind. Dies dient als Erinnerung für einen selber oder auch wenn jemand andere das Projekt übernimmt.
 Über den Modul `TEMPLATE` kann z.B. ein Text generiert werden:
 
-```
+```javascript
 +prog template
 head 'Einfuehrung'
 
@@ -101,7 +101,7 @@ Im weiteren Schritt werden die Materialangaben im Modul `AQUA` definiert.
 Wir werden nur mit Beton und Bewehrung arbeiten, jedoch wurden als Beispiel noch andere Materialien (Spannstahl, Konstruktionsstahl und Holz) definiert.
 >Im Modul `AQUA` werden sowohl Materiale als auch Querschnitte definiert. Es wäre möglich in einem Modul beide zu definieren. In diesem Beispiel wird aber die Eingabe getrennt erstellt, zu achten ist hier im zweiten Modul auf den `CTRL REST 2` des sicherstellt, dass die Eingabe aus dem ersten `AQUA` nicht überschrieben wird.
 
-```
+```javascript
 +prog aqua
 head 'Materialangabe'
 $----------------------------------------------------------------------------------
@@ -137,7 +137,7 @@ end
 Es werden zwei rechteckige Querschnitte für die Wand bzw. Decke erstellt.
 Dazu werden zwei mögliche Definitionen vorgestellt:
 
-```
+```javascript
 +prog aqua
 head 'Definition des Querschnitts'
 echo full extr
@@ -201,7 +201,7 @@ erstellt.
 Die Vernetzung der Strukturelement erfolgt nach der Berechnung des Moduls im Hintergrund.
 Alternativ kann auch der Modul `SOFIMSHA` verwendet werden, wo direkt mit Finiten Elementen gearbeitet wird. 
 
-```
+```javascript
 +prog sofimshc
 head 'Model'
 page unii 0 unio 0
@@ -230,7 +230,7 @@ end
 ## Definition-der-Einwirkungen
 Diese Definition in  `SOFILOAD` dient der Benennung der Einwirkungen  und um ggf. Sicherheitsbeiwerte und Kombinationsbeiwerte explizit du anzupassen - mehr dazu siehe Kommentare im Code unten:
 
-```
+```javascript
 +prog sofiload
 head 'Definition der Einwirkungen'
 echo full extr
@@ -261,7 +261,7 @@ end
 ## Definition-der-Lasten
 
 Ständige Lasten:
-```
+```javascript
 +prog sofiload
 head 'Definition der Lasten - Ständige'
 
@@ -275,8 +275,8 @@ end
 ```
 
 Veränderliche Lasten:
-```
-+prog sofiload urs:7
+```javascript
++prog sofiload
 head 'Definition der Lasten - Veränderliche'
 
 !*!Label Nutzlast
@@ -301,8 +301,8 @@ end
 ## Berechnung
 Es wird eine lineare Berechnung durchgeführt - also es werden keine geometrischen oder materiellen Nichtlinearitäten berücksichtigt.
 
-```
-+prog ase urs:6
+```javascript
++prog ase
 head Berechnung
 ! Berechnungsparameter
 syst prob line        ! lineare Berechnung
@@ -322,8 +322,8 @@ Die linear ermittelten Schnittgrößen und Verschiebungen werden für die Ermitt
 Wichtig ist anzumerken, dass SOFiSTiK die Ergebnisse der Überlagerungen in Lastfälle (LF) speichert.
 Jedoch muss darauf geachtet werden, dass nicht vorhandene LFs (sei es tatsächlich eingegebenen Lasten oder Ergebnisse von Kombinationen) überschrieben werden - also nicht verwendete LFs verwendet werden. Hier hilft ein klares Nummerierungs-system von LFs.
 
-```
-+prog maxima urs:12
+```javascript
++prog maxima
 head 'Ergebniskombination'
 
 ! Output control
@@ -414,7 +414,7 @@ end
 Die Bemessung der Stabelemente erfolgt im Modul `AQB`. In der zweiten Übung wird auch die Bemessung der Flächenelemente mit dem Modul `BEMESS` vorgestellt.
 
 GZT Bemessung:
-```
+```javascript
 +prog aqb urs:11
 head 'GZT Bemessung Stäbe'
 echo full extr ! Komplette textliche Ausgabe der Ergebnisse
@@ -440,7 +440,7 @@ end
 ```
 
 GZG Bemessung:
-```
+```javascript
 +prog aqb urs:13
 head 'GZG Bemessung Stäbe'
 echo full extr
@@ -467,7 +467,7 @@ Im folgenden werden folgende Ausgaben der Ergebnisse dargestellt:
 
 ### Graphische Ausgabe
 
-```
+```javascript
 +PROG WING urs:14
 HEAD 'Schnittgrößen'
 
@@ -548,11 +548,12 @@ LC   NO 1420+16 ; NODE TYPE UY UNIT DEFA SCHH 0.3 FILL NO
 
 END      
 ```
+## Extra
 
 ### Tabellarische Ausgabe
 Mit dem Modul `RESULTS` können Ergebnisse graphisch (Diagramme) oder tabellarisch ausgegeben werden. 
 
-```
+```javascript
 +PROG RESULTS
 HEAD 'Tabelarische Ausgabe Schnittgrößen'
 
@@ -582,7 +583,7 @@ Im folgenden werden die Schnittgrößen (maximale Drucknormalkraft und dazugehö
 Der Code unten erzeugt neue bzw. überschreibt existierende Worksheets in der Exceldatei.
 
 Exportieren von Biegemoment My,Ed und Normalkraft NEd ins Excel:
-```code
+```javascript
 +prog results
 head 'Export ins xlsx Format'
 
@@ -609,7 +610,7 @@ end
 ```
 
 Exportieren von My,Ek unter GZG Quasi-ständige Einwirkungskombination:
-```code
+```javascript
 +prog results
 head 'Export ins xlsx Format'
 
@@ -624,7 +625,7 @@ end
 ```
 
 Exportieren der Querschnittsfläche und Trägheitsmoments:
-```code
+```javascript
 +prog results urs:15
 head 'Querschnittswerte'
 
@@ -648,7 +649,7 @@ END
 ```
 
 
-## Extra
+
 **Erzeugte Einwirkungskombinationen nachvollziehen**
 
 Insbesondere bei Einwirkungskombinationen wo viele Einwirkungen kombiniert werden, ist es sinnvoll für die kritischen Schnitte (z.B. Auflager, Feldmitte) sich die automatisch erzeugten Einwirkungskombinationen anzeigen zu lassen um zu prüfen ob richtige Einwirkungen mit richtigen Sicherheits- und Kombinationsbeiwerten angesetzt worden sind.
@@ -659,7 +660,7 @@ Diese Kombination wird dann in `SOFILOAD` in ein Lastfall umgeformt werden und d
 	*Hinweis: hier ist auch `AQUA` RSET  nützlich*
 
 
-```
+```javascript
 +prog maxima
 head 'Track EWK'
 echo full
