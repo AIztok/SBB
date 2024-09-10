@@ -6,9 +6,10 @@
 
 [Graphische Darstellung der Ergebnisse](#graphische-darstellung-der-ergebnisse)
 
+[Umfang Ausgabe im Report](#Umfang-Ausgabe-im-Report)
 # Last unter einem Winkel
 Knotenlasten oder auch Linienlasten die unter einem Winkel zu den X/Y/Z Achsen stehen, können wie folgend eingegeben werden (pro Komponente):
-```code
+```js
 ! Knotenlast in X-Y Ebene
 lc 2 type Q titl 'Punktlast'
 ! mit let wird eine lokale (nur in dem +prog xyz aktiv) Variable definiert
@@ -28,7 +29,7 @@ node #spt type pyy p1 sin(#ang)*#p
 ![[013_Fachwerk.png]]
 Anbei ein Beispiel eines Fachwerkträgers dessen Obergurt einem Bogen folgt und das Modell mit Verwendung von Schleifen (loops) erzeugt wird um sich die Arbeit zu erleichtern:
 
-```code
+```js
 !#!Chapter Modell
 +prog aqua
 head 'Material- und Querschnittsangabe'
@@ -137,7 +138,7 @@ end
 
 Aber in `Sofiload` fehlt die Zuweisung der Last (z.B. LC2) zu einer Einwirkung
 
-```code
+```js
 1 +prog sofiload
 2 head 'Definition der Lasten'
 3 !*!Label Ständige
@@ -148,17 +149,17 @@ Aber in `Sofiload` fehlt die Zuweisung der Last (z.B. LC2) zu einer Einwirkung
 ```
 
 Für den Beispiel wäre die 4. Zeile im oberen Codeblock wie folgend zu korrigieren:
-```
+```js
 4 lc 2 type G_2 titl 'Ausbaulasten'
 ```
 
 Alternativ könnte auch wie folgend vorgegangen werden:
 - im Sofiload werden die Lasten keiner Einwirkung zugewiesen (hier sollte dann `type none` stehen)
-```code
+```js
 4 lc 2 type none titl 'Ausbaulasten'
 ```
 - in Maxima werden explizit die Lastfälle der Einwirkung zugewiesen (beispielhaft für G_2, LC2 dargestellt):
-```code
+```js
 +prog maxima
 head 'Ergebniskombination'
 ! Output control
@@ -202,3 +203,36 @@ Um die gewählten Ergebnisse in ein Code zu transformieren wir wie folgend vorge
 - Anzeigen im `Report Browser`
 
 ![013_Grafix_Report.gif](/docs/assets/images/013_Grafix_Report.gif)
+
+# Umfang Ausgabe im Report
+
+Der Umfang der Ausgabe im Bericht (`Report`) kann in jedem Berechnungsmodul (prog) über die Kommende `ECHO` gesteuert werden. 
+Unten als Beispiel in AQUA, wo wir z.B. statt der sehr umfangreichen Ausgabe (echo full extr) nur die basis Ausgabe für Material (echo mat yes) und umfangreiche Ausgabe für Querschnitte (echo sect full) ausgeben wollen. 
+
+```js
++prog aqua
+head Querschnitte
+
+!echo full extr ! maximale Ausgabe im Bericht
+echo mat yes    ! Material
+echo sect full   ! Querschnitte
+!... yes - basis Ausgabe
+!... full - umfangreiche Ausgabe
+!... extr - sehr umfangreiche Ausgabe
+
+
+ctrl rest 2 ! damit vorheriges aqua nicht gelöscht
+
+srec 1 h 0.3[m] b 1000 so 4.5[cm] su 4.5[cm] mno 1 mrf 101 titl 'Decke QS'
+srec 2 h 0.25[m] b 1000 so 4.5[cm] su 4.5[cm] mno 1 mrf 101 titl 'Wand QS'
+
+end      
+```
+
+Welche Ergebnisse wir anzeigen können, kann im Handbuch gelesen werden (im Sofistik F1 drucken und auf die ECHO Zeile gehen).
+
+![013_Echo_command.png](/docs/assets/images/013_Echo_command.png)
+
+Zusätzlich können im `Report` selber noch einzelne Ausgaben ausgeblendet werden, dadurch dass auf das "Buch" gedruckt wird:
+
+![013_Report_open-close.png|300](/docs/assets/images/013_Report_open-close.png)
