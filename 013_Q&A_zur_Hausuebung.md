@@ -237,4 +237,4 @@ Welche Ergebnisse wir anzeigen können, kann im Handbuch gelesen werden (im Sofi
 
 Zusätzlich können im `Report` selber noch einzelne Ausgaben ausgeblendet werden, dadurch dass auf das "Buch" gedruckt wird:
 
-![013_Report_open-close.png|300](/docs/assets/images/013_Report_open-close.png)
+![013_Report_open-close.png](/docs/assets/images/013_Report_open-close.png)
