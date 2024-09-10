@@ -121,7 +121,7 @@ Die folgende Warnung bedeutet, dass für die gewählten Einwirkungen (`ACT`) kei
 ![013_Warnung_Maxima.png](/docs/assets/images/013_Warnung_Maxima.png)
 
 Z.B. in Maxima wird das Programm aufgefordert eine Kombination anhand der gewählten Einwirkungen zu erstellen:
-```code
+```js
 +prog maxima
 head 'Ergebniskombination'
 ! Output control
@@ -159,6 +159,7 @@ Alternativ könnte auch wie folgend vorgegangen werden:
 4 lc 2 type none titl 'Ausbaulasten'
 ```
 - in Maxima werden explizit die Lastfälle der Einwirkung zugewiesen (beispielhaft für G_2, LC2 dargestellt):
+
 ```js
 +prog maxima
 head 'Ergebniskombination'
@@ -174,6 +175,7 @@ COMB 1 rare BASE - $ kombination charakteristisch
 
 end
 ```
+
 # Graphische Darstellung der Ergebnisse
 
 In den Beispielen wurde die graphische Ausgabe im `REPORT BROWSER` mittels `+prog WING` bereits in einem sauberen Code dargestellt. Dieser Code kann natürlich weiter an anderen Beispielen (mit ggf. geringeren Anpassungen) angewendet werden.
