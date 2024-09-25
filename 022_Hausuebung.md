@@ -4,13 +4,13 @@
 Letzte Zahl = Y
 Vorletzte Zahl = X
 
-**X < 5**
+**X <= 5**
 2-Feldträger
 
 **X >5**
 3-Feldträger
 
-**Y < 5**
+**Y <= 5**
 Das Zwischenauflager des 2-Feldträgers (Stütze) soll mit modelliert werden (Stab) mit der Geschosshöhe gem. Ihrer Planung bei KE2. Das Auflager am Fuß der Stütze kann eingespannt angenommen werden.
 
 **Y >5**
@@ -46,3 +46,18 @@ Die Wände und Stützen können als Auflager modelliert werden. Parallel liegend
 
 Der Bereich ist ggf. nach Angabe PKZ in ein 2-Feld oder 3-Feld System umzuwandeln - hier können die gleichen Spannweiten angenommen werden.
 
+Nur als Stabmodell modelliert (Achtung auf die Festhaltungen wenn als 3D System gerechnet - Verdrehungen um die x, y oder z Achse können beim `SPT .... FIX PPMX` festgehalten werden)
+
+![022_Bild_2.png|400](/docs/assets/images/022_Bild_2.png)
+
+Für Bonus Punkte kann auch die Platte mitmodeliert werden.
+
+![022_Bild_1.png|400](/docs/assets/images/022_Bild_1.png)
+
+Das rechteckige Netz der Vernetzung der Platte kann bei `SAR` mit `mctl regm` vorgegeben werden. Wenn nicht, kann es etwas unregelmäßig sein, was bei ausreichender Feinheit des Netztes und keinen sehr "scharfkantigen" Formen noch trotzdem übereinstimmende Ergebnisse liefert.
+
+![022_Bild_4.png|400](/docs/assets/images/022_Bild_4.png)
+
+In jedem Fall immer drauf denken, dass das Berechnungsmodell wie unten ausschaut, also der Unterzug ist ein Stab, mit nur einer Dimension in seiner Achse und "eingebettet" bzw. vernetzt mit der Platte, Rest ist Visualisierung. 
+
+![022_Bild_3.png|400](/docs/assets/images/022_Bild_3.png)
