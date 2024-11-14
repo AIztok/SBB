@@ -24,6 +24,7 @@ Grundriss des Kellers mit den Hauptabmessungen:
 
 <iframe width="640" height="480" style="border:1px solid #eeeeee;" src="https://3dviewer.net/embed.html#model=https://raw.githubusercontent.com/AIztok/SBB/main/docs/FH_SBB_Keller_v01.ifc$camera=-17.01361,10.35751,12.86238,-4.51050,1.57500,2.39519,0.00000,1.00000,0.00000,45.00000$projectionmode=perspective$envsettings=fishermans_bastion,off$backgroundcolor=42,43,46,255$defaultcolor=200,200,200$defaultlinecolor=100,100,100$edgesettings=off,0,0,0,1"></iframe>
 
+
 Der komplette SOFiSTIK Code der unten Abschnittsweise gegeben ist, kann komplett im .dat Format
 [hier](https://aiztok.github.io/SBB/docs/FH_SBB_Keller_v01.dat) 
 heruntergeladen werden.
@@ -59,7 +60,7 @@ Somit ist die Norm und andere Systeminformationen (Z-Richtung, Gruppendivisor) b
 ## Materialangabe
 Die Materialangabe kann von [[011_Einfuehrungsbeispiel]] übernommen werden, jedoch werden diesmal nur die Materiale genommen die auch tatsächlich Anwendung finden.
 
-```
+```js
 +prog aqua
 head 'Materialangabe'
 $----------------------------------------------------------------------------------
@@ -80,7 +81,7 @@ end
 ```
 ## Querschnittsdefinition
 
-```
+```js
 +prog aqua
 head 'Definition des Querschnitts'
 page unii 0 unio 0
@@ -98,9 +99,9 @@ In folgenden wird das Modell über die eingaben von:
 - Strukturflächen (SAR): Umrandung definiert durch SPTs
 
 Die Knoten werden aus Textdateien abgerufen, dafür sollten die folgenden Dateien im gleichen Ordner wie die Sofistik-datei abgelegt sein:
-- [Knoten Fundamentplatte](https://aiztok.github.io/SBB/docs/Knoten_Fundamentpl.dat)
-- [Knoten Wände](https://aiztok.github.io/SBB/docs/Knoten_Waende.dat)
-- [Knoten Stütze](https://aiztok.github.io/SBB/docs/Knoten_Stuetze.dat)
+- [Knoten Fundamentplatte](https://aiztok.github.io/SBB/docs/_Knoten_Fundamentpl.dat)
+- [Knoten Wände](https://aiztok.github.io/SBB/docs/_Knoten_Waende.dat)
+- [Knoten Stütze](https://aiztok.github.io/SBB/docs/_Knoten_Stuetze.dat)
 
 Der Inhalt der Datei mit den Knoten der Fundamentplatte ist wie folgend:
 ```
@@ -119,8 +120,11 @@ wo:
 - 4. Spalte: Z-Koordinate in [m] (z)
 - 5. Spalte: Nummer des Referenzknotens (nref)
 
+Punkte der Fundamentplatte:
+![031_Eckpunkte_BoPla.png](/docs/assets/images/031_Eckpunkte_BoPla.png)
+
 Eingabe Code für das Modell:
-```
+```js
 +prog sofimshc
 head 'Model'
 page unii 0 unio 0 ! Input and Output units
@@ -149,11 +153,11 @@ $-------------------------------------------------------------------------------
 !
 spt no     x     y  z  nref ref=pt sx=1 sy=0 sz=0
 ! Fundamentplatte
-#include knoten_fundamentpl.dat
+#include _knoten_fundamentpl.dat
 ! Wände
-#include knoten_waende.dat
+#include _knoten_waende.dat
 ! Stütze
-#include knoten_stuetze.dat
+#include _knoten_stuetze.dat
 
 $----------------------------------------------------------------------------------
 !*!Label Flächen
@@ -214,7 +218,7 @@ end
 
 ## Definition der Einwirkungen
 Übernehmen wir von dem Einführungsbeispiel (Wind kann entfernt werden, da nicht verwendet) und wir ergänzen G_3 für den ständigen Erdruhedruck:
-```
+```js
 +prog sofiload
 head 'Definition der Einwirkungen'
 echo full extr
@@ -233,7 +237,7 @@ end
 ## Definition der Lasten
 Es werden die Flächenlasten mit drei verschiedenen Methoden definiert:
 
-```
+```js
 +prog sofiload
 head 'Definition der Lasten'
 
@@ -290,7 +294,7 @@ end
 ## Berechnung
 Wie bei anderen Beispielen wird eine lineare Berechnung von allen Lastfällen durchgeführt:
 
-```
+```js
 +prog ase
 head Berechnung
 echo full extr
@@ -309,7 +313,7 @@ end
 Wir werden nur die GZT Einwirkungskombination erstellen. Es wäre aber natürlich möglich, wie im Einführungsbeispiel, alle Einwirkungskombinationen im gleichen Sinne zu ermitteln.
 Wir schalten diesmal auch die `QUAD` Ergebnisse ein.
 
-```code
+```js
 ! Block definition der Ergebnisse die überlagert werden sollen
 ! mit #define / #enddef können text blöcke definiert werden, die immer wieder verwendet werden
 ! in diesem Fall wählen wir aus einer List aus, für welche Ergebnisse wollen wir, dass die Software
@@ -402,7 +406,7 @@ Die Flächenelemente werden mit dem Modul `BEMESS` bemessen, hier unterteilen wi
 - Bemessung im Grenzzustand der Gebrauchstauglichkeit - Rissweite
 
 Definition der Parameter für die Fundamentplatte und Wände:
-```code
+```js
 +prog bemess
 head 'Definition der Bewehrungsparameter'
 echo full extr
@@ -442,7 +446,7 @@ end
 ```
 
 GZT Bemessung:
-```code
+```js
 +PROG BEMESS
 HEAD 'GZT Bemessung'
 
@@ -509,7 +513,7 @@ Das Ergebnis der Bemessung ist auch in `GRAPHICS` graphisch/textlich dargestellt
 ![031_Graphics_Durchstanzen.png](/docs/assets/images/031_Graphics_Durchstanzen.png)
 
 GZG Bemessung:
-```code
+```js
 +prog bemess
 head 'SLS Rissbreitenachweis'
 ECHO full extr ! komplette Ausgabe im Bericht
@@ -533,7 +537,7 @@ end
 ## Ergebnisausgabe
 
 Schnittgrößen für die Fundamentplatte:
-```code
+```js
 +PROG WING
 HEAD 'Ergebnisse Flächenelemente'
 ctrl meas 2d ! Steuerung, dass alle Ergebnisse für 2D Darstellung angepasst werden
@@ -615,7 +619,7 @@ end
 
 Ergebnisse Bemessung Flächenelemente:
 
-```
+```js
 +PROG WING
 HEAD 'Bewehrung Flächenelemente'
 
