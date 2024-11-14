@@ -99,9 +99,9 @@ In folgenden wird das Modell über die eingaben von:
 - Strukturflächen (SAR): Umrandung definiert durch SPTs
 
 Die Knoten werden aus Textdateien abgerufen, dafür sollten die folgenden Dateien im gleichen Ordner wie die Sofistik-datei abgelegt sein:
-- [Knoten Fundamentplatte](https://aiztok.github.io/SBB/docs/_Knoten_Fundamentpl.dat)
-- [Knoten Wände](https://aiztok.github.io/SBB/docs/_Knoten_Waende.dat)
-- [Knoten Stütze](https://aiztok.github.io/SBB/docs/_Knoten_Stuetze.dat)
+- [Knoten Fundamentplatte](https://aiztok.github.io/SBB/docs/Knoten_Fundamentpl.dat)
+- [Knoten Wände](https://aiztok.github.io/SBB/docs/Knoten_Waende.dat)
+- [Knoten Stütze](https://aiztok.github.io/SBB/docs/Knoten_Stuetze.dat)
 
 Der Inhalt der Datei mit den Knoten der Fundamentplatte ist wie folgend:
 ```
